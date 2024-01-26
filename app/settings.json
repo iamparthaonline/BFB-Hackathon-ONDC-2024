@@ -1,0 +1,9 @@
+{
+  "public": {
+  },
+  "galaxy.meteor.com": {
+    "env": {
+      "MONGO_URL": "mongodb+srv://ondc-hackathon:wEqIj1KfrBd50FME@ondc.a3agffn.mongodb.net/?retryWrites=true&w=majority"
+    }
+  }
+}
