@@ -1,0 +1,23 @@
+version: '1.0.0'
+services:
+  model_backend:
+    platform: linux/amd64
+    build: 
+      context: ./server
+      dockerfile: Dockerfile
+    ports:
+      - "8000:8000"
+    volumes:
+      - ./server:/model_backend
+    environment:
+      - PORT=8000
+
+  meteor_app:
+    platform: linux/amd64
+    build:
+      context: ./app
+      dockerfile: Dockerfile
+    ports:
+      - "3000:3000"
+    volumes:
+      - ./app:/meteor_app
