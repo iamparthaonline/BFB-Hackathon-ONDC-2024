@@ -16,7 +16,7 @@
             @click="loader = 'loading3'"
           >
             Knowledge Bank
-            <v-icon right dark>arrow-right-circle-outline</v-icon>
+            <v-icon right>arrow-right-circle-outline</v-icon>
           </v-btn>
         </div>
       </v-tab-item>

@@ -1,22 +1,18 @@
 <template>
   <div class="page-container">
-    <app-bar />
-    <v-sheet id="app-sheet" class="overflow-y-auto" max-height="600">
-      <v-container style="height: 150vh">
-        <search-input-vue :loading="loading" @submit-form="searchQuery" :timeTaken="timeTaken" />
-        <results v-if="response" :aiResponse="aiResponse"></results>
-      </v-container>
-    </v-sheet>
+    <v-container>
+      <search-input-vue :loading="loading" @submit-form="searchQuery" :timeTaken="timeTaken" />
+      <results v-if="response" :aiResponse="aiResponse"></results>
+    </v-container>
   </div>
 </template>
 
 <script>
   import results from './results.vue';
   import searchInputVue from './searchInput.vue';
-  import appBar from '../../components/appBar.vue';
 
   export default {
-    components: {results, searchInputVue, appBar},
+    components: {results, searchInputVue},
     data() {
       return {loading: false, response: false, aiResponse: '', timeTaken: undefined};
     },
@@ -25,12 +21,12 @@
         this.loading = true;
         const startTime = +new Date();
         const response = await fetch(`${Meteor.settings.public.API_HOST}generate-AI-response`, {
-          method: 'POST', // *GET, POST, PUT, DELETE, etc.
-          cache: 'no-cache', // *default, no-cache, reload, force-cache, only-if-cached
+          method: 'POST',
+          cache: 'no-cache',
           headers: {
             'Content-Type': 'application/json',
           },
-          body: JSON.stringify({queryText, k: 25}), // body data type must match "Content-Type" header
+          body: JSON.stringify({queryText, k: 25}),
         });
 
         this.aiResponse = await response.json();
