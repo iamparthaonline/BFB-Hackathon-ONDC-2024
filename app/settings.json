@@ -1,5 +1,6 @@
 {
   "public": {
+    "ROOT_URL_IMAGE_SCANNING":"https://1133-34-124-157-202.ngrok-free.app"
   },
   "galaxy.meteor.com": {
     "env": {

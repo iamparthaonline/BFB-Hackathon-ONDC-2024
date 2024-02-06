@@ -1,5 +1,8 @@
 <template>
-  <div>Home Page</div>
+  <div>
+    Home Page
+    <a href="/imageScanner">Image Scanner</a>
+  </div>
 </template>
 
 <script>

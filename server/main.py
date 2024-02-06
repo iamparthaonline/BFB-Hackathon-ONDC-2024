@@ -29,11 +29,6 @@ class MyCustomHandler(BaseCallbackHandler):
         print(event, context, "##$#$#$$%#$#$#$")
 
 
-@app.get("/")
-def read_root():
-    return {"Hello": "World"}
-
-
 @app.post("/add-document-to-knowledge-base")
 def addOneDocumentToKnowledgeBase(documentUrl: str) -> bool:
     collection = client[config['DB_NAME']
@@ -159,8 +154,6 @@ def generateAIResponseFromTheQuery(query: Query) -> str:
             llm_chain=llm_chain,
             document_prompt=document_prompt,
             document_variable_name=document_variable_name,
-
-
         )
         res = chain.run(input_documents=reordered_docs, query=query.queryText)
         print(res)
