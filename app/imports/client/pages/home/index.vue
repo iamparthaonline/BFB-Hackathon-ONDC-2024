@@ -3,7 +3,7 @@
     <a href="/imageScanner">Image Scanner</a>
     <v-container>
       <search-input-vue :loading="loading" @submit-form="searchQuery" :timeTaken="timeTaken" />
-      <results v-if="response" :aiResponse="aiResponse"></results>
+      <results v-if="response" :aiResponse="aiResponse" :semanticSearchResponse="semanticSearchResponse"></results>
     </v-container>
   </div>
 </template>
@@ -15,7 +15,7 @@
   export default {
     components: {results, searchInputVue},
     data() {
-      return {loading: false, response: false, aiResponse: '', timeTaken: undefined};
+      return {loading: false, response: false, semanticSearchResponse: '', aiResponse: '', timeTaken: undefined};
     },
     methods: {
       async searchQuery(queryText) {
@@ -31,7 +31,19 @@
         });
 
         this.aiResponse = await response.json();
+        const semanticSearch = await fetch(
+          `${Meteor.settings.public.API_HOST}semantic-search?query=${queryText}&k=25`,
+          {
+            method: 'POST',
+            cache: 'no-cache',
+            headers: {
+              'Content-Type': 'application/json',
+            },
+          },
+        );
 
+        this.semanticSearchResponse = await semanticSearch.json();
+        this.semanticSearchResponse.sort((a, b) => a.document.similarity_score - b.document.similarity_score);
         this.loading = false;
         this.response = true;
         this.timeTaken = (+new Date() - startTime) / 1000;
@@ -43,6 +55,5 @@
 <style lang="scss" scoped>
   .page-container {
     margin: 25px;
-    padding-bottom: 50px;
   }
 </style>
