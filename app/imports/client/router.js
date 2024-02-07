@@ -7,6 +7,10 @@ const router = new VueRouter({
       path: '/',
       component: () => import('./pages/home/index.vue'),
     },
+    {
+      path: '/imageScanner',
+      component: () => import('./pages/imageScanner/index.vue'),
+    },
   ],
   mode: 'history',
 });

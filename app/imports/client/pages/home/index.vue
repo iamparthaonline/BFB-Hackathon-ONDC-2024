@@ -1,5 +1,6 @@
 <template>
   <div class="page-container">
+    <a href="/imageScanner">Image Scanner</a>
     <v-container>
       <search-input-vue :loading="loading" @submit-form="searchQuery" :timeTaken="timeTaken" />
       <results v-if="response" :aiResponse="aiResponse" :semanticSearchResponse="semanticSearchResponse"></results>
