@@ -1,7 +1,7 @@
 FROM node:14.17-buster
 
 ENV METEOR_ALLOW_SUPERUSER=true
-ENV ROOT_URL="http://34.69.232.63"
+ENV ROOT_URL="http://34.42.69.103"
 ENV MONGO_URL="mongodb+srv://ondc-hackathon:wEqIj1KfrBd50FME@ondc.a3agffn.mongodb.net/?retryWrites=true&w=majority"
 RUN curl https://install.meteor.com/ | sh
 
