@@ -2,7 +2,7 @@
   <div class="mt-4 main-container">
     <v-tabs color="deep-purple accent-4" left>
       <v-tab>AI Response</v-tab>
-      <v-tab @click="handleClick">Knowledge bank</v-tab>
+      <v-tab>Knowledge bank</v-tab>
       <v-tab>Others</v-tab>
       <v-tab-item>
         <div v-if="aiResponse">

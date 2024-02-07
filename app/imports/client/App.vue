@@ -1,6 +1,6 @@
 <template>
   <v-app>
-    <v-main style="height: 100vh">
+    <v-main>
       <v-responsive height="100%">
         <router-view></router-view>
       </v-responsive>
@@ -12,4 +12,10 @@
   export default {};
 </script>
 
-<style></style>
+<style lang="scss" scoped>
+  .v-main {
+    .v-responsive {
+      overflow: auto;
+    }
+  }
+</style>
