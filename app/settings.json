@@ -1,11 +1,6 @@
 {
   "public": {
     "ROOT_URL_IMAGE_SCANNING":"https://1133-34-124-157-202.ngrok-free.app",
-    "API_HOST": "http://localhost:8000/"
-  },
-  "galaxy.meteor.com": {
-    "env": {
-      "MONGO_URL": "mongodb+srv://ondc-hackathon:wEqIj1KfrBd50FME@ondc.a3agffn.mongodb.net/?retryWrites=true&w=majority"
-    }
+    "API_HOST": "http://34.69.232.63:8000/"
   }
 }
