@@ -9,13 +9,13 @@
 </template>
 
 <script>
-  export default {};
+  export default {
+    name: 'App',
+  };
 </script>
 
 <style lang="scss" scoped>
-  .v-main {
-    .v-responsive {
-      overflow: auto;
-    }
+  .v-responsive {
+    overflow: auto;
   }
 </style>

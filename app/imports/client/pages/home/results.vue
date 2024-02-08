@@ -9,11 +9,11 @@
           <p class="my-4">{{ aiResponse }}</p>
           <p class="my-4">For more information check out the related things,</p>
           <v-btn
-            :loading="loading3"
-            :disabled="loading3"
+            :loading="loading"
+            :disabled="loading"
             color="blue-grey"
             class="ma-2 white--text"
-            @click="loader = 'loading3'"
+            @click="loader = 'loading'"
           >
             Knowledge Bank
             <v-icon right>arrow-right-circle-outline</v-icon>
@@ -60,6 +60,7 @@
         source: null,
         pageNumber: null,
         sourceIdx: null,
+        loading: false,
       };
     },
     components: {resultCardVue, pdfviewer},
