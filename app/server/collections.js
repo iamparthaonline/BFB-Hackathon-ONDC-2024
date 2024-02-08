@@ -1,3 +1,3 @@
-const test = new Mongo.Collection('test');
+const imageScannerUrls = new Mongo.Collection('imageScannerUrls');
 
-export default test;
+export default imageScannerUrls;
