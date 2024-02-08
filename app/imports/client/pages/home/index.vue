@@ -1,10 +1,37 @@
 <template>
   <div class="page-container">
-    <a href="/imageScanner">Image Scanner</a>
-    <v-container>
-      <search-input-vue :loading="loading" @submit-form="searchQuery" :timeTaken="timeTaken" />
-      <results v-if="response" :aiResponse="aiResponse" :semanticSearchResponse="semanticSearchResponse"></results>
-    </v-container>
+    <v-card>
+      <v-container>
+        <search-input-vue :loading="loading" @submit-form="searchQuery" :timeTaken="timeTaken" />
+        <results v-if="response" :aiResponse="aiResponse" :semanticSearchResponse="semanticSearchResponse"></results>
+      </v-container>
+    </v-card>
+    <v-card>
+      <v-container class="mt-4">
+        <div class="text-center mt-8">
+          <h1 class="mb-4">Scan Product & Packaging</h1>
+          <p class="mb-4">
+            Be compliance ready with your products by quickly scanning your product and packages with our state of the
+            art AI driven scanner.
+          </p>
+        </div>
+        <div class="text-center">
+          <v-btn to="/imageScanner" color="primary" x-large>
+            <v-icon left>mdi-creation</v-icon>
+            Scan Product
+          </v-btn>
+        </div>
+      </v-container>
+    </v-card>
+    <v-footer absolute padless>
+      <v-card flat tile width="100%" class="blue-grey lighten-5 text-center">
+        <v-card-text class="text--blue-grey darken-4">
+          Built with
+          <v-icon color="red">mdi-heart</v-icon>
+          by Team Fasalians
+        </v-card-text>
+      </v-card>
+    </v-footer>
   </div>
 </template>
 

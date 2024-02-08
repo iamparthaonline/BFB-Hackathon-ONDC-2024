@@ -31,7 +31,7 @@
               ></v-textarea>
             </v-container> -->
           </validation-provider>
-          <div class="text-right mt-4">
+          <div class="text-center mt-4">
             <v-btn class="mr-4" type="submit" color="primary" :loading="loading" :disabled="invalid || loading">
               Submit
             </v-btn>
@@ -97,6 +97,6 @@
 
 <style>
   .search-input-container {
-    margin-top: 150px;
+    margin-top: 20px;
   }
 </style>

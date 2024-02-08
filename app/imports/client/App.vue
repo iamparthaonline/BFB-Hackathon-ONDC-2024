@@ -17,5 +17,6 @@
 <style lang="scss" scoped>
   .v-responsive {
     overflow: auto;
+    background-color: rgb(227, 242, 253);
   }
 </style>

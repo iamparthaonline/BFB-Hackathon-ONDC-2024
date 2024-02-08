@@ -2,7 +2,7 @@
   <v-card class="mx-auto" width="100%" :class="{active: isActive}">
     <v-card-text>
       <div class="flex flex-row">
-        <v-progress-linear v-model="showScore" height="20" color="green" rounded>
+        <v-progress-linear v-model="showScore" height="20" color="green" rounded readonly>
           <strong>{{ showScore }}% Match</strong>
         </v-progress-linear>
       </div>
