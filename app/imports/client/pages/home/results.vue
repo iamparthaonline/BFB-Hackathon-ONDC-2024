@@ -12,7 +12,7 @@
       </v-tab-item>
       <v-tab-item>
         <div class="results-list d-flex flex-row">
-          <v-container class="" width="400">
+          <v-container class="card">
             <div class="d-flex flex-row flex-wrap">
               <result-card-vue
                 v-for="(result, idx) in semanticSearchResponse"
@@ -75,6 +75,9 @@
   .results-list {
     height: calc(100dvh - 87px);
     overflow-y: auto;
+    .card {
+      max-width: 50%;
+    }
     .pdf-container {
       max-height: fit-content;
       position: relative;
