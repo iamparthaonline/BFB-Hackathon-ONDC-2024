@@ -6,7 +6,7 @@
         <results v-if="response" :aiResponse="aiResponse" :semanticSearchResponse="semanticSearchResponse"></results>
       </v-container>
     </v-card>
-    <v-card>
+    <v-card class="mb-16">
       <v-container class="mt-4">
         <div class="text-center mt-8">
           <h1 class="mb-4">Scan Product & Packaging</h1>
