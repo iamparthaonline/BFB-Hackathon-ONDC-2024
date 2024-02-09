@@ -66,9 +66,11 @@
 
 <style scoped>
   .response {
-    white-space: pre;
-    text-wrap: wrap;
-    text-align: justify;
+    p {
+      white-space: pre-line;
+      text-wrap: wrap;
+      text-align: justify;
+    }
   }
   .results-list {
     height: calc(100dvh - 87px);
