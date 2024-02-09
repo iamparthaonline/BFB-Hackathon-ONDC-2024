@@ -6,6 +6,9 @@
     color="#E3F2FD"
     class="d-flex flex-column justify-start align-center"
   >
+    <v-btn fab absolute plain style="left: 0; top: 0" to="/">
+      <v-icon>mdi-arrow-left</v-icon>
+    </v-btn>
     <ImageCard v-if="!responseText" :showLoader="showLoader" :imageBase64="imageBase64" />
     <ResponseCard v-else :imageSourceURL="imageURL" :responseText="responseText" />
     <div v-if="imageBase64">
@@ -130,8 +133,11 @@
       },
       goToHome() {
         this.imageBase64 = undefined;
-        CameraPreview.hide();
-        CameraPreview.stopCamera();
+        if (Meteor.isCordova) {
+          CameraPreview.hide();
+          CameraPreview.stopCamera();
+        }
+
         this.isCameraActive = false;
         this.responseText = undefined;
         this.imageURL = undefined;
