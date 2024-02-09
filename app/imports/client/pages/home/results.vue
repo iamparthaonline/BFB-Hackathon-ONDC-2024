@@ -5,9 +5,9 @@
       <v-tab>Knowledge bank</v-tab>
       <v-tab>Others</v-tab>
       <v-tab-item>
-        <div v-if="aiResponse">
+        <div v-if="aiResponse" class="response">
           <p class="my-4">{{ aiResponse }}</p>
-          <p class="my-4">For more information check out the related things,</p>
+          <p class="my-4">For more information check out the Knowledge bank,</p>
         </div>
       </v-tab-item>
       <v-tab-item>
@@ -65,6 +65,11 @@
 </script>
 
 <style scoped>
+  .response {
+    white-space: pre;
+    text-wrap: wrap;
+    text-align: justify;
+  }
   .results-list {
     height: calc(100dvh - 87px);
     overflow-y: auto;
