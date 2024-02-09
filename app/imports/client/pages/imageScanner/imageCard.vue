@@ -1,5 +1,5 @@
 <template>
-  <v-card width="85%" height="70%" color="white" class="mt-10">
+  <v-card width="85%" height="70%" color="white" class="mt-12">
     <ScanningOverlay v-if="showLoader" />
     <InstructionSection v-if="!imageBase64" />
     <v-img contain v-else :src="imageBase64" height="100%" width="100%"></v-img>
