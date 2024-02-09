@@ -37,7 +37,7 @@
           <v-icon>mdi-upload</v-icon>
         </v-btn>
       </v-fab-transition>
-      <v-fab-transition>
+      <v-fab-transition v-if="isCordova">
         <v-btn key="mdi-share-variant" @click="startCamera" color="primary" fab large dark class="v-btn--example ml-6">
           <v-icon>mdi-camera</v-icon>
         </v-btn>
@@ -94,6 +94,7 @@
         showLoader: false,
         responseText: undefined,
         imageURL: undefined,
+        isCordova: Meteor.isCordova,
       };
     },
     methods: {
