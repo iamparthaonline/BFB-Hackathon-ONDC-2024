@@ -13,8 +13,8 @@
   </v-container>
 </template>
 <script>
-  import {getDocument, renderTextLayer} from 'pdfjs-dist/build/pdf';
-  import 'pdfjs-dist/build/pdf.worker.entry';
+  import {getDocument} from 'pdfjs-dist/legacy/build/pdf';
+  import 'pdfjs-dist/legacy/build/pdf.worker.entry';
 
   export default {
     name: 'PdfViewer',
