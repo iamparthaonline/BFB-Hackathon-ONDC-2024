@@ -1,4 +1,5 @@
 # Team Fasalians - Build for Bharat ONDC Hackathon
+![Build For Bharat](https://github.com/iamparthaonline/BFB-Hackathon-ONDC-2024/blob/main/BFB.png)
 
 ## Authors 
 
@@ -45,9 +46,9 @@ docker compose up
 
 ## Application Presentation 
 
-[Demo Video]
+![Demo Video](https://youtu.be/tqLmmZwRw5I)
 
-[Final Presentation]
+![Final Presentation](https://drive.google.com/file/d/1Bgm779w4gcMuD0GwVeBIC9Utc10X_9zz/view)
 
 
 ## Checkout The Application
