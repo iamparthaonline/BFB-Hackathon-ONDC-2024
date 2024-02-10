@@ -46,9 +46,9 @@ docker compose up
 
 ## Application Presentation 
 
-![Demo Video](https://youtu.be/tqLmmZwRw5I)
+[Demo Video](https://youtu.be/tqLmmZwRw5I)
 
-![Final Presentation](https://drive.google.com/file/d/1Bgm779w4gcMuD0GwVeBIC9Utc10X_9zz/view)
+[Final Presentation](https://drive.google.com/file/d/1Bgm779w4gcMuD0GwVeBIC9Utc10X_9zz/view)
 
 
 ## Checkout The Application
