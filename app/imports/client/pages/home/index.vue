@@ -47,6 +47,9 @@
     methods: {
       async searchQuery(queryText) {
         this.loading = true;
+        this.semanticSearchResponse = '';
+        this.aiResponse = '';
+        this.response = false;
         const startTime = +new Date();
         const response = await fetch(`http://34.42.69.103:8000/generate-AI-response`, {
           method: 'POST',
