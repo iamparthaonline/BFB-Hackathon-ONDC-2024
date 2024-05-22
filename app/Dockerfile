@@ -42,4 +42,4 @@ RUN bash $SCRIPTS_FOLDER/build-meteor-npm-dependencies.sh
 # Start app
 ENTRYPOINT ["/docker/entrypoint.sh"]
 
-CMD ["npm", "start-prod"]
+CMD ["npm", "run","start-prod"]
