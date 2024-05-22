@@ -3,7 +3,8 @@
   "private": true,
   "scripts": {
     "set-db-url": "export MONGO_URL='mongodb+srv://ondc-hackathon:wEqIj1KfrBd50FME@ondc.a3agffn.mongodb.net/?retryWrites=true&w=majority'",
-    "start": " npm run set-db-url && meteor run --settings=settings.json"
+    "start": " npm run set-db-url && meteor run --settings=settings.json",
+    "start-prod": "METEOR_SETTINGS=$(cat settings.json) node main.js"
   },
   "dependencies": {
     "@babel/runtime": "^7.17.9",

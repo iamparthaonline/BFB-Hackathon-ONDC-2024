@@ -2,8 +2,6 @@ FROM geoffreybooth/meteor-base:2.7.3
 
 # Copy app package.json and package-lock.json into container
 COPY ./package*.json $APP_SOURCE_FOLDER/
-COPY ./settings.json $APP_BUNDLE_FOLDER/
-RUN export METEOR_SETTINGS="$(cat $APP_BUNDLE_FOLDER/settings.json)"
 
 ENV ROOT_URL="http://34.42.189.79"
 ENV MONGO_URL="mongodb+srv://ondc-hackathon:wEqIj1KfrBd50FME@ondc.a3agffn.mongodb.net/?retryWrites=true&w=majority"
@@ -12,6 +10,11 @@ RUN bash $SCRIPTS_FOLDER/build-app-npm-dependencies.sh
 
 # Copy app source into container
 COPY . $APP_SOURCE_FOLDER/
+
+# RUN export METEOR_SETTINGS="$(cat $APP_BUNDLE_FOLDER/bundle/settings.json)"
+
+# RUN echo $METEOR_SETTINGS
+
 
 RUN bash $SCRIPTS_FOLDER/build-meteor-bundle.sh
 
@@ -39,4 +42,4 @@ RUN bash $SCRIPTS_FOLDER/build-meteor-npm-dependencies.sh
 # Start app
 ENTRYPOINT ["/docker/entrypoint.sh"]
 
-CMD ["node", "main.js"]
+CMD ["npm", "start-prod"]
