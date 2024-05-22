@@ -9,7 +9,8 @@ from dotenv import load_dotenv, dotenv_values
 from pymongo import MongoClient
 from langchain.prompts import PromptTemplate
 from langchain.chains import RetrievalQA, StuffDocumentsChain, LLMChain
-from langchain_community.llms import HuggingFaceHub
+# from langchain_community.llms import HuggingFaceHub
+from langchain_community.llms import HuggingFaceEndpoint
 from pydantic import BaseModel
 from langchain_community.document_transformers import (
     LongContextReorder,
@@ -142,8 +143,13 @@ def generateAIResponseFromTheQuery(query: Query) -> str:
 
         document_variable_name = "context"
 
-        llm = HuggingFaceHub(
-            repo_id="mistralai/Mixtral-8x7B-Instruct-v0.1", model_kwargs={"temperature": 0.9, "max_length": 500, "max_new_tokens": 500})
+        repo_id = "mistralai/Mistral-7B-Instruct-v0.2"
+
+        llm = HuggingFaceEndpoint(
+            repo_id=repo_id, max_length=500, temperature=0.9, max_new_tokens=500, token=config['HUGGINGFACEHUB_API_TOKEN']
+        )
+        # llm = HuggingFaceEndpoint(
+        #     repo_id="mistralai/Mixtral-8x7B-Instruct-v0.1", model_kwargs={"tempe rature": 0.9, "max_length": 500, "max_new_tokens": 500})
 
         stuff_prompt_override = """You are a helpful legal compliance assistant who will refer the following context to answer the questions and also mention the section number or subsection number in your answer . at the end. If you don't know the answer, just say that you don't know, don't try to make up an answer
         -----
@@ -171,4 +177,5 @@ def generateAIResponseFromTheQuery(query: Query) -> str:
 if __name__ == '__main__':
     url = "https://www.fssai.gov.in/upload/notifications/2022/06/62ac3f9dba33cGazette_Notification_Vegan_Food_17_06_2022.pdf"
     q = Query(queryText="I want to sell cheese online", k=25)
+    print(performSemanticSearch("I want to sell cheese online"))
     generateAIResponseFromTheQuery(q)

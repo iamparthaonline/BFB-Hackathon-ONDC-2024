@@ -48,7 +48,7 @@
       async searchQuery(queryText) {
         this.loading = true;
         const startTime = +new Date();
-        const response = await fetch(`http://34.42.69.103:8000/generate-AI-response`, {
+        const response = await fetch(`http://34.42.189.79:8000/generate-AI-response`, {
           method: 'POST',
           cache: 'no-cache',
           headers: {
@@ -58,7 +58,7 @@
         });
 
         this.aiResponse = await response.json();
-        const semanticSearch = await fetch(`http://34.42.69.103:8000/semantic-search?query=${queryText}&k=25`, {
+        const semanticSearch = await fetch(`http://34.42.189.79:8000/semantic-search?query=${queryText}&k=25`, {
           method: 'POST',
           cache: 'no-cache',
           headers: {
