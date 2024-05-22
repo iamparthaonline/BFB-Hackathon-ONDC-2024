@@ -41,7 +41,7 @@
       </validation-observer>
     </div>
 
-    <v-alert v-if="timeTaken" dense text type="success">
+    <v-alert v-if="timeTaken && !loading" dense text type="success">
       Processed your query in
       <strong>{{ parseFloat(timeTaken, 2) }} seconds</strong>
     </v-alert>
