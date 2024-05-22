@@ -20,7 +20,7 @@ services:
     ports:
       - "3000:3000"
     environment:
-      ROOT_URL: http://34.42.69.103:3000
+      ROOT_URL: http://34.42.189.79:3000
       MONGO_URL: mongodb+srv://ondc-hackathon:wEqIj1KfrBd50FME@ondc.a3agffn.mongodb.net/?retryWrites=true&w=majority
       PORT: 3000
     volumes:
