@@ -11,9 +11,8 @@ RUN bash $SCRIPTS_FOLDER/build-app-npm-dependencies.sh
 # Copy app source into container
 COPY . $APP_SOURCE_FOLDER/
 
-# RUN export METEOR_SETTINGS="$(cat $APP_BUNDLE_FOLDER/bundle/settings.json)"
-
-# RUN echo $METEOR_SETTINGS
+RUN jq -c . < $APP_SOURCE_FOLDER/settings.json > /tmp/settings.json
+RUN echo $(cat /tmp/settings.json) > /tmp/METEOR_SETTINGS
 
 
 RUN bash $SCRIPTS_FOLDER/build-meteor-bundle.sh
@@ -42,4 +41,4 @@ RUN bash $SCRIPTS_FOLDER/build-meteor-npm-dependencies.sh
 # Start app
 ENTRYPOINT ["/docker/entrypoint.sh"]
 
-CMD ["npm", "run","start-prod"]
+CMD ["node", "main.js"]
