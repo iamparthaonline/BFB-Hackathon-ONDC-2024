@@ -1,7 +1,7 @@
 FROM geoffreybooth/meteor-base:2.7.3
 
 # Copy app package.json and package-lock.json into container
-COPY ./package*.json $APP_SOURCE_FOLDER/
+COPY ./*.json $APP_SOURCE_FOLDER/
 
 ENV ROOT_URL="http://34.42.189.79"
 ENV MONGO_URL="mongodb+srv://ondc-hackathon:wEqIj1KfrBd50FME@ondc.a3agffn.mongodb.net/?retryWrites=true&w=majority"
@@ -10,9 +10,6 @@ RUN bash $SCRIPTS_FOLDER/build-app-npm-dependencies.sh
 
 # Copy app source into container
 COPY . $APP_SOURCE_FOLDER/
-
-RUN jq -c . < $APP_SOURCE_FOLDER/settings.json > /tmp/settings.json
-RUN echo $(cat /tmp/settings.json) > /tmp/METEOR_SETTINGS
 
 
 RUN bash $SCRIPTS_FOLDER/build-meteor-bundle.sh
