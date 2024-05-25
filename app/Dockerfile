@@ -3,7 +3,7 @@ FROM geoffreybooth/meteor-base:2.7.3
 # Copy app package.json and package-lock.json into container
 COPY ./*.json $APP_SOURCE_FOLDER/
 
-ENV ROOT_URL="http://34.42.189.79"
+ENV ROOT_URL="http://35.192.98.43"
 ENV MONGO_URL="mongodb+srv://ondc-hackathon:wEqIj1KfrBd50FME@ondc.a3agffn.mongodb.net/?retryWrites=true&w=majority"
 
 RUN bash $SCRIPTS_FOLDER/build-app-npm-dependencies.sh
