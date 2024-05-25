@@ -5,11 +5,14 @@
         <v-container fluid>
           <v-select
             value="English"
-            color="#fff"
-            :items="['English', 'Kannada', 'Hindi', 'Bengali']"
+            :items="lang"
+            v-model="defaultSelected"
+            item-text="name"
+            item-value="value"
             label="Language"
           ></v-select>
-          <v-btn block class="mb-3" color="#4b06ba">Save</v-btn>
+
+          <v-btn block class="mb-3" color="#4b06ba" @click="changeLanguage">Save</v-btn>
           <v-btn block outlined @click="toggleLanguageSelector">Close</v-btn>
         </v-container>
       </div>
@@ -26,11 +29,23 @@
     data() {
       return {
         show: false,
+        lang: [
+          {name: 'English', value: 'en'},
+          {name: 'हिंदी', value: 'hi'},
+          {name: 'ગુજરાતી', value: 'gu'},
+          {name: 'मराठी', value: 'mr'},
+          {name: 'ಕನ್ನಡ', value: 'kn'},
+        ],
+        defaultSelected: localStorage.getItem('language') || 'en',
       };
     },
     methods: {
       toggleLanguageSelector() {
         this.show = !this.show;
+      },
+      changeLanguage() {
+        this.setLocale(this.defaultSelected);
+        this.show = false;
       },
     },
   };
