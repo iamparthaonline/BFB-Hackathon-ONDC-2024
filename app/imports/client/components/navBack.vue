@@ -1,5 +1,5 @@
 <template>
-  <v-btn @click="$router.go(-1)" icon class="back-button">
+  <v-btn @click="$emit('goback')" icon class="back-button">
     <v-icon>mdi-keyboard-backspace</v-icon>
   </v-btn>
 </template>

@@ -39,6 +39,7 @@
       return {
         heading: 'da',
         isWeb: !Meteor.isCordova,
+        typeWriterTimeout: null,
       };
     },
     mounted: () => {
@@ -50,13 +51,14 @@
         if (i < actualHeading.length) {
           document.getElementById('heading').innerHTML += actualHeading.charAt(i);
           i += 1;
-          setTimeout(typeWriter, speed);
+          this.typeWriterTimeout = setTimeout(typeWriter, speed);
         }
       };
       typeWriter();
     },
     methods: {
       goToPage(path) {
+        clearTimeout(this.typeWriterTimeout);
         setTimeout(() => {
           this.$router.push({path});
         }, 300);
