@@ -6,6 +6,9 @@ import '../imports/client/mixins/index';
 import App from '../imports/client/App.vue';
 import router from '../imports/client/router';
 import vuetify from '../imports/client/plugins/vuetify';
+import localizationMixin from '../imports/client/mixins/localization.mixin';
+
+Vue.mixin(localizationMixin);
 
 DateTime = luxon;
 Meteor.startup(() => {

@@ -73,6 +73,7 @@
           source: this.fileName,
           pageNumber: this.result.source_page_number + 1,
           sourceIdx: this.idx,
+          content: this.result.page_content.substring(0, 300),
         });
       },
       openSource() {
