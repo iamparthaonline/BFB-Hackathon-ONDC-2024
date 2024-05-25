@@ -27,7 +27,7 @@
             </div>
           </v-container>
           <v-container v-if="source" class="pdf-container d-none d-sm-none d-md-block flex-grow" fluid>
-            <pdfviewer :source="source" :pageNumber="pageNumber" :sourceIdx="sourceIdx" class="child" />
+            <pdfviewer :source="source" :content="content" class="child" />
           </v-container>
         </div>
       </v-tab-item>
@@ -37,7 +37,7 @@
 
 <script>
   import resultCardVue from './resultCard.vue';
-  import pdfviewer from './pdfViewer.vue';
+  import pdfviewer from './pdfViewerV2.vue';
 
   export default {
     name: 'Results',
@@ -51,20 +51,22 @@
         pageNumber: null,
         sourceIdx: null,
         loading: false,
+        content: '',
       };
     },
     components: {resultCardVue, pdfviewer},
     methods: {
-      openPdfViewer({source, pageNumber, sourceIdx}) {
+      openPdfViewer({source, pageNumber, sourceIdx, content}) {
         this.pageNumber = pageNumber;
         this.sourceIdx = sourceIdx;
         this.source = source;
+        this.content = content;
       },
     },
   };
 </script>
 
-<style scoped>
+<style lang="scss" scoped>
   .response {
     p {
       white-space: pre-line;
