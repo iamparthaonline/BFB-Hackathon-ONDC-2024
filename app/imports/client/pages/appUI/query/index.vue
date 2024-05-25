@@ -86,21 +86,16 @@
         </div>
       </div>
       <div v-else-if="status === 'LOADING' || status === 'SUCCESS' || status === 'REPORT'" class="scanning-image">
-        <img
-          src="/test.webp"
-          :class="`uploaded-img ${status === 'LOADING' || status === 'SUCCESS' ? '' : 'success-report'}`"
-          alt=""
-        />
-        <div v-if="status === 'REPORT'" class="report-paragraph">
-          <div class="mb-3">
-            <h2>Your Query</h2>
-            <figure>
-              <figcaption>Listen to your query</figcaption>
-              <audio controls src="/media/cc0-audio/t-rex-roar.mp3"></audio>
-            </figure>
+        <div class="original-query mb-3">
+          <h2>Your Query</h2>
+          <figure class="my-2">
+            <figcaption>Listen to your query</figcaption>
+            <audio controls src="/media/cc0-audio/t-rex-roar.mp3"></audio>
+          </figure>
 
-            <p>{{ name }}</p>
-          </div>
+          <p>"{{ name }}"</p>
+        </div>
+        <div v-if="status === 'REPORT'" class="report-paragraph">
           <v-alert v-if="timeTaken && !loading" dense text type="success">
             Processed your query in
             <strong>{{ parseFloat(timeTaken, 2) }} seconds</strong>
@@ -113,17 +108,17 @@
         <v-overlay v-if="status === 'LOADING' || status === 'SUCCESS'">
           <div class="loader-container" v-if="status === 'LOADING'">
             <h2>Please wait</h2>
-            <img src="/search.gif" class="loader" alt="" />
+            <img src="/ai.gif" class="loader" alt="" />
             <p>
-              Processing your image.
+              Processing your query.
               <br />
-              Note: Currently we are only processing food and electronics product
+              Note: Currently we are only processing food and electronics categories
             </p>
           </div>
           <div class="loader-container" v-else>
             <h2>Processing complete</h2>
             <img src="/verified.gif" class="loader" alt="" />
-            <p>Completed the scanning and processing of your packaging image</p>
+            <p>Successfully completed processing your query.</p>
           </div>
         </v-overlay>
       </div>
@@ -134,23 +129,6 @@
           something went wrong. Please try again.
         </h4>
         <v-btn block @click="status = 'INITIAL'" class="mb-3" outlined color="#4b06ba">Try Again</v-btn>
-        <h3>Please consider below things before uploading a packaging image,</h3>
-        <ul>
-          <li>
-            <strong>Ensure Good Lighting:</strong>
-            Make sure the image is taken in well-lit conditions to enhance the readability and accuracy of text and
-            details on the product's backside.
-          </li>
-          <li>
-            <strong>High Resolution:</strong>
-            Use a high-resolution camera setting to capture the image.
-          </li>
-          <li>
-            <strong>No Obstructions:</strong>
-            Ensure that nothing is covering any part of the product's backside. Hands, fingers, or other objects should
-            not obstruct the view of the label.
-          </li>
-        </ul>
       </div>
     </div>
     <p class="my-3">
@@ -418,6 +396,14 @@
       box-shadow: rgba(149, 157, 165, 0.2) 0px 8px 24px;
       button {
         color: #fff;
+      }
+    }
+    .original-query {
+      background-color: #fff;
+      border-radius: 12px;
+      padding: 24px;
+      p {
+        font-size: 16px;
       }
     }
   }
