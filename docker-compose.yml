@@ -20,7 +20,7 @@ services:
     ports:
       - "3000:3000"
     environment:
-      ROOT_URL: http://35.192.98.43
+      ROOT_URL: https://complyai.live
       MONGO_URL: mongodb+srv://ondc-hackathon:wEqIj1KfrBd50FME@ondc.a3agffn.mongodb.net/?retryWrites=true&w=majority
       PORT: 3000
     volumes:
