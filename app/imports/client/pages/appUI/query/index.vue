@@ -1,7 +1,7 @@
 <template>
   <app-wrapper>
     <div class="product-packaging-scanner-container">
-      <nav-back />
+      <nav-back @goback="goback" />
       <h1>{{ _('query_page_title') }}</h1>
       <div v-if="status === 'INITIAL'">
         <p class="description">
@@ -36,7 +36,15 @@
                   label="Enter your query"
                   required
                 ></v-textarea>
-                <v-select class="mt-3" :items="['hindi', 'bengali']" label="Language" outlined></v-select>
+                <v-select
+                  class="mt-3"
+                  :items="lang"
+                  v-model="defaultSelected"
+                  item-text="name"
+                  item-value="value"
+                  label="Language"
+                  outlined
+                ></v-select>
               </validation-provider>
               <div class="text-center mt-2">
                 <v-btn
@@ -44,7 +52,7 @@
                   class="mr-4"
                   type="submit"
                   color="#7930f0"
-                  :loading="loading"
+                  :loading="loadingSubmitBtn"
                   :disabled="invalid || loading"
                 >
                   {{ _('query_page_submit_button') }}
@@ -58,7 +66,7 @@
           <h2>{{ _('query_page_speak_in_your_lang_text') }}</h2>
           <div class="recorder-wrapper">
             <div class="recorder-time-action">
-              <div class="recorder-time">00:00</div>
+              <div class="recorder-time">{{ timerString }}</div>
               <v-btn
                 block
                 class="mr-4"
@@ -66,47 +74,77 @@
                 color="red"
                 :loading="loading"
                 :disabled="recording !== 'RECORDING'"
+                outlined
+                @click="cancel"
               >
                 {{ _('query_page_cancel_button') }}
               </v-btn>
             </div>
-            <div v-ripple class="record-action" v-if="recording === 'INITIAL'">
+            <div v-ripple class="record-action" v-if="recording === 'INITIAL'" @click="startRecording">
               <img src="/start-record.png" alt="" />
               <span>{{ _('query_page_start_recording_text') }}</span>
             </div>
-            <div v-ripple class="record-action" v-else-if="recording === 'RECORDING'">
+            <div v-ripple class="record-action" v-else-if="recording === 'RECORDING'" @click="save">
               <img src="/stop-record.png" alt="" />
-              <span>{{ _('query_page_stop_recording_text') }}</span>
+              <span>Finish Recording</span>
+            </div>
+            <div class="record-action" v-else-if="recording === 'PROCESSING'">
+              <img src="/stop-record.png" alt="" />
+              <span>Processing</span>
             </div>
           </div>
-          <v-select class="mt-3" :items="['hindi', 'bengali']" label="Language" outlined></v-select>
-          <v-btn block class="mr-4" type="submit" color="#7930f0" :loading="loading" :disabled="invalid || loading">
+          <figure v-if="audioURL" class="my-2">
+            <audio controls :src="audioURL"></audio>
+            <div class="my-2">
+              <v-btn type="submit" color="red" outlined @click="reset">Reset</v-btn>
+            </div>
+          </figure>
+          <v-select
+            class="mt-3"
+            :items="lang"
+            v-model="defaultSelected"
+            item-text="name"
+            item-value="value"
+            label="Language"
+            outlined
+          ></v-select>
+          <v-btn
+            block
+            class="mr-4"
+            type="submit"
+            color="#7930f0"
+            :loading="loadingSubmitBtn"
+            :disabled="disabledAudioSubBtn"
+            @click="searchQueryWithAudio"
+          >
             Submit
           </v-btn>
         </div>
       </div>
       <div v-else-if="status === 'LOADING' || status === 'SUCCESS' || status === 'REPORT'" class="scanning-image">
-        <img
-          src="/test.webp"
-          :class="`uploaded-img ${status === 'LOADING' || status === 'SUCCESS' ? '' : 'success-report'}`"
-          alt=""
-        />
-        <div v-if="status === 'REPORT'" class="report-paragraph">
-          <div class="mb-3">
-            <h2>{{ _('query_page_your_query_text') }}</h2>
-            <figure>
-              <figcaption>{{ _('query_page_listen_your_query_text') }}</figcaption>
-              <audio controls src="/media/cc0-audio/t-rex-roar.mp3"></audio>
-            </figure>
+        <div class="original-query mb-3">
+          <h2>{{ _('query_page_your_query_text') }}</h2>
+          <figure v-if="audioSearch" class="my-2">
+            <figcaption>{{ _('query_page_listen_your_query_text') }}</figcaption>
+            <audio controls :src="audioURL"></audio>
+          </figure>
 
-            <p>{{ name }}</p>
-          </div>
+          <p>"{{ audioSearch ? ASTValue : name }}"</p>
+        </div>
+        <div v-if="status === 'REPORT'" class="report-paragraph">
           <v-alert v-if="timeTaken && !loading" dense text type="success">
             {{ _('query_page_processed_your_query_in') }}
-            <strong>{{ parseFloat(timeTaken, 2) }} seconds</strong>
+            <strong>{{ parseInt(timeTaken) }} seconds</strong>
           </v-alert>
 
-          <results v-if="response" :aiResponse="aiResponse" :semanticSearchResponse="semanticSearchResponse"></results>
+          <results
+            v-if="response"
+            :aiResponse="aiResponse"
+            :semanticSearchResponse="semanticSearchResponse"
+            :defaultSelected="defaultSelected"
+            :loading="langChangeLoading"
+            @changeLang="getResponseInSelectedLang"
+          ></results>
 
           <v-btn block @click="status = 'INITIAL'" class="mt-3" outlined color="#4b06ba">
             {{ _('query_page_check_another_text') }}
@@ -115,7 +153,7 @@
         <v-overlay v-if="status === 'LOADING' || status === 'SUCCESS'">
           <div class="loader-container" v-if="status === 'LOADING'">
             <h2>{{ _('query_page_please_wait_text') }}</h2>
-            <img src="/search.gif" class="loader" alt="" />
+            <img src="/ai.gif" class="loader" alt="" />
             <p>
               {{ _('query_page_processing_image_text') }}
               <br />
@@ -135,6 +173,7 @@
           <br />
           {{ _('query_page_error_message') }}
         </h4>
+
         <v-btn block @click="status = 'INITIAL'" class="mb-3" outlined color="#4b06ba">
           {{ _('query_page_try_again_button') }}
         </v-btn>
@@ -165,6 +204,8 @@
 <script>
   import {required, digits, max} from 'vee-validate/dist/rules';
   import {extend, ValidationObserver, ValidationProvider, setInteractionMode} from 'vee-validate';
+  import {MediaRecorder, register} from 'extendable-media-recorder';
+  import {connect} from 'extendable-media-recorder-wav-encoder';
   import appWrapper from '../../../components/appWrapper.vue';
   import navBack from '../../../components/navBack.vue';
   import results from '../../home/results.vue';
@@ -204,12 +245,73 @@
       response: false,
       semanticSearchResponse: '',
       aiResponse: '',
+      loading: false, // to avoid error msg
+      invalid: false, // to avoid error msg
+      defaultSelected: 'en',
+      lang: [
+        {name: 'English', value: 'en'},
+        {name: 'हिंदी', value: 'hi'},
+        {name: 'ગુજરાતી', value: 'gu'},
+        {name: 'मराठी', value: 'mr'},
+        {name: 'ಕನ್ನಡ', value: 'kn'},
+      ],
+      constraints: {audio: true},
+      timerString: '00:00',
+      mediaRecorder: null,
+      minute: 0,
+      second: 0,
+      chunks: [],
+      audioContent: null,
+      saveAudioString: false,
+      loadingSubmitBtn: false,
+      audioURL: null,
+      audioSearch: false,
+      ASTValue: null,
+      langChangeLoading: false,
     }),
-
+    async mounted() {
+      await register(await connect());
+    },
+    computed: {
+      disabledAudioSubBtn() {
+        if (this.recording === 'INITIAL' && this.audioContent) return false;
+        return true;
+      },
+    },
     methods: {
-      submit() {
+      goback() {
+        if (this.status === 'REPORT') {
+          this.status = 'INITIAL';
+          this.audioContent = null;
+          this.audioURL = null;
+        } else this.$router.go(-1);
+      },
+      async submit() {
+        this.loadingSubmitBtn = true;
         this.$refs.observer.validate();
-        this.searchQuery(this.name);
+        if (this.defaultSelected !== 'en') {
+          await Meteor.call('NMT_handler', this.defaultSelected, 'en', this.name, (err, data) => {
+            if (!err) {
+              console.log('data', data);
+              this.loadingSubmitBtn = false;
+              if (data.isSuccess) {
+                console.log(
+                  '🚀 ~ awaitMeteor.call ~ data.data.pipelineResponse[1].output[0].source:',
+                  data.data.pipelineResponse[0].output[0].source,
+                );
+                this.name = data.data.pipelineResponse[0].output[0].source;
+                this.searchQuery(data.data.pipelineResponse[0].output[0].target);
+                // this.ASTValue = data.data.pipelineResponse[1].output[0].source;
+                // this.searchQuery(data.data.pipelineResponse[1].output[0].target);
+              }
+            } else {
+              this.loadingSubmitBtn = false;
+              console.log('error', err);
+            }
+          });
+        } else {
+          this.searchQuery(this.name);
+        }
       },
       clear() {
         this.name = '';
@@ -219,6 +321,7 @@
         this.tab = tab;
       },
       async searchQuery(queryText) {
+        this.loadingSubmitBtn = false;
         this.status = 'LOADING';
         this.semanticSearchResponse = '';
         this.aiResponse = '';
@@ -232,8 +335,8 @@
           },
           body: JSON.stringify({queryText, k: 25}),
         });
-
-        this.aiResponse = await response.json();
+        this.responseSrc = await response.json();
+        await this.getResponseInSelectedLang(this.defaultSelected);
         const semanticSearch = await fetch(
           `${Meteor.settings.public.API_HOST}/semantic-search?query=${queryText}&k=25`,
           {
@@ -248,9 +351,185 @@
         this.semanticSearchResponse = await semanticSearch.json();
         this.semanticSearchResponse.sort((a, b) => a.document.similarity_score - b.document.similarity_score);
         this.status = 'REPORT';
-
         this.response = true;
         this.timeTaken = (+new Date() - startTime) / 1000;
+      },
+      startRecording() {
+        if (navigator.mediaDevices.getUserMedia) {
+          this.audioURL = null;
+          navigator.mediaDevices.getUserMedia(this.constraints).then(this.onSuccess, this.onError);
+        } else {
+          this.recording = 'INITIAL';
+          // console.log('MediaDevices.getUserMedia() not supported on your browser!');
+        }
+      },
+      async stopRecording() {
+        await this.mediaRecorder.stop();
+        console.log('🚀 ~ stopRecording ~ this.recording:', this.recording);
+      },
+      onSuccess(stream) {
+        this.timerString = '00:00';
+        setTimeout(() => {
+          this.stopWatch();
+        }, 1000);
+        this.recording = 'RECORDING';
+        this.mediaRecorder = new MediaRecorder(stream, {mimeType: 'audio/wav'});
+
+        this.mediaRecorder.start();
+        this.mediaRecorder.onstop = async () => {
+          this.recording = 'PROCESSING';
+          const tracks = stream.getAudioTracks();
+          tracks.forEach(track => track.stop());
+          if (this.saveAudioString) {
+            const blob = new Blob(this.chunks, {type: 'audio/wav'});
+            console.log('🚀 ~ this.mediaRecorder.onstop= ~ this.mediaRecorder.mimeType:', this.mediaRecorder.mimeType);
+            this.audioURL = window.URL.createObjectURL(blob);
+            console.log('🚀 ~ onSuccess ~ audioURL:', this.audioURL);
+
+            const audioString = await this.audioToBase64(blob);
+            [, this.audioContent] = audioString.split(',');
+
+            console.log('🚀 ~ this.mediaRecorder.onstop= ~ audioString:', this.audioContent);
+          }
+          this.chunks = [];
+          this.recording = 'INITIAL';
+          console.log('🚀 ~ this.mediaRecorder.onstop= ~ this.recording:', this.recording);
+        };
+
+        this.mediaRecorder.ondataavailable = e => {
+          this.chunks.push(e.data);
+        };
+      },
+      onError(err) {
+        this.recording = 'INITIAL';
+        console.log('The following error occured: ', err);
+      },
+      stopWatch() {
+        if (this.recording !== 'RECORDING') {
+          this.minute = 0;
+          this.second = 0;
+          return;
+        }
+        this.second += 1;
+
+        if (this.second === 60) {
+          this.minute += 1;
+          this.second = 0;
+        }
+
+        if (this.minute === 60) {
+          this.minute = 0;
+          this.second = 0;
+        }
+
+        let minString = this.minute;
+        let secString = this.second;
+
+        if (this.minute < 10) {
+          minString = `0${minString}`;
+        }
+
+        if (this.second < 10) {
+          secString = `0${secString}`;
+        }
+        this.timerString = `${minString}:${secString}`;
+        setTimeout(this.stopWatch, 1000);
+      },
+      audioToBase64(blob) {
+        return new Promise((resolve, reject) => {
+          const reader = new FileReader();
+          reader.onerror = reject;
+          reader.onload = e => resolve(e.target.result);
+          reader.readAsDataURL(blob);
+        });
+      },
+      cancel() {
+        this.saveAudioString = false;
+        this.minute = 0;
+        this.second = 0;
+        this.timerString = '00:00';
+        this.audioContent = null;
+        this.stopRecording();
+      },
+      save() {
+        this.saveAudioString = true;
+        this.stopRecording();
+      },
+      reset() {
+        this.saveAudioString = false;
+        this.minute = 0;
+        this.second = 0;
+        this.timerString = '00:00';
+        this.audioContent = null;
+        this.audioURL = null;
+      },
+      async searchQueryWithAudio() {
+        this.loadingSubmitBtn = true;
+        this.audioSearch = true;
+        if (this.defaultSelected !== 'en') {
+          await Meteor.call('ASR_NMT_handler', this.defaultSelected, this.audioContent, (err, data) => {
+            if (!err) {
+              console.log('data', data);
+              this.loadingSubmitBtn = false;
+              if (data.isSuccess) {
+                console.log(
+                  '🚀 ~ awaitMeteor.call ~ data.data.pipelineResponse[1].output[0].target:',
+                  data.data.pipelineResponse[1].output[0].target,
+                );
+                this.ASTValue = data.data.pipelineResponse[1].output[0].source;
+                this.searchQuery(data.data.pipelineResponse[1].output[0].target);
+              }
+            } else {
+              this.loadingSubmitBtn = false;
+              console.log('error', err);
+            }
+          });
+        } else {
+          await Meteor.call('ASR_handler', this.defaultSelected, this.audioContent, (err, data) => {
+            if (!err) {
+              console.log('data', data);
+              this.loadingSubmitBtn = false;
+              if (data.isSuccess) {
+                console.log(
+                  '🚀 ~ awaitMeteor.call ~ data.data.pipelineResponse[0].output[0].source',
+                  data.data.pipelineResponse[0].output[0].source,
+                );
+
+                this.ASTValue = data.data.pipelineResponse[0].output[0].source;
+                this.searchQuery(this.ASTValue);
+              }
+            } else {
+              this.loadingSubmitBtn = false;
+              console.log('error', err);
+            }
+          });
+        }
+      },
+      async getResponseInSelectedLang(lang) {
+        console.log('🚀 ~ getResponseInSelectedLang ~ lang:', lang);
+        this.langChangeLoading = true;
+        if (lang === 'en') {
+          this.aiResponse = this.responseSrc;
+          this.langChangeLoading = false;
+          console.log('🚀 ~ getResponseInSelectedLang ~ this.loadingSubmitBtn:', this.loadingSubmitBtn);
+          return;
+        }
+        await Meteor.call('NMT_handler', 'en', lang, this.responseSrc, (err, data) => {
+          if (!err) {
+            console.log('data', data);
+            if (data.isSuccess) {
+              console.log(
+                '🚀 ~ awaitMeteor.call ~ data.data.pipelineResponse[1].output[0].source:',
+                data.data.pipelineResponse[0].output[0].source,
+              );
+              this.aiResponse = data.data.pipelineResponse[0].output[0].target;
+              this.langChangeLoading = false;
+            }
+          } else {
+            this.langChangeLoading = false;
+            console.log('error', err);
+          }
+        });
       },
     },
   };
@@ -420,6 +699,14 @@
       box-shadow: rgba(149, 157, 165, 0.2) 0px 8px 24px;
       button {
         color: #fff;
+      }
+    }
+    .original-query {
+      background-color: #fff;
+      border-radius: 12px;
+      padding: 24px;
+      p {
+        font-size: 16px;
       }
     }
   }

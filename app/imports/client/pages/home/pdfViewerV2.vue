@@ -16,7 +16,7 @@
     },
     methods: {
       mask() {
-        return window.location.href + this.source;
+        return `${window.location.origin}/${this.source}`;
       },
       find() {
         this.$refs.viewer.addEventListener('load', () => {

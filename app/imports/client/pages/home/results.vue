@@ -3,8 +3,20 @@
     <v-tabs color="deep-purple accent-4" left>
       <v-tab>AI Response</v-tab>
       <v-tab>Knowledge bank</v-tab>
-      <v-tab>Others</v-tab>
       <v-tab-item>
+        <v-col cols="4" class="mb-0">
+          <v-select
+            class="mt-3"
+            :items="lang"
+            v-model="selectedlang"
+            item-text="name"
+            item-value="value"
+            label="Language"
+            outlined
+            :loading="loading"
+            @change="$emit('changeLang', selectedlang)"
+          ></v-select>
+        </v-col>
         <div v-if="aiResponse" class="response">
           <p class="my-4">{{ aiResponse }}</p>
           <p class="my-4">For more information check out the Knowledge bank,</p>
@@ -44,14 +56,24 @@
     props: {
       aiResponse: String,
       semanticSearchResponse: Array,
+      defaultSelected: String,
+      loading: Boolean,
     },
     data() {
       return {
         source: null,
         pageNumber: null,
         sourceIdx: null,
-        loading: false,
         content: '',
+        selectedlang: this.defaultSelected,
+        lang: [
+          {name: 'English', value: 'en'},
+          {name: 'हिंदी', value: 'hi'},
+          {name: 'ગુજરાતી', value: 'gu'},
+          {name: 'मराठी', value: 'mr'},
+          {name: 'ಕನ್ನಡ', value: 'kn'},
+        ],
+        constraints: {audio: true},
       };
     },
     components: {resultCardVue, pdfviewer},

@@ -28,6 +28,12 @@ const loadLocale = locale => {
   }
 };
 
+const setLocalStorage = () => {
+  if (localStorage.getItem('language')) {
+    loadLocale(localStorage.getItem('language'));
+  }
+};
+
 const translate = key => {
   return state.translations[key] || key;
 };
@@ -44,8 +50,10 @@ export default {
     },
     setLocale(locale) {
       loadLocale(locale);
+      localStorage.setItem('language', locale);
     },
   },
 };
 
 loadLocale(state.locale);
+setLocalStorage();

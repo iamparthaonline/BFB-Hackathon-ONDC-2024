@@ -36,7 +36,7 @@
           {name: 'मराठी', value: 'mr'},
           {name: 'ಕನ್ನಡ', value: 'kn'},
         ],
-        defaultSelected: 'en',
+        defaultSelected: localStorage.getItem('language') || 'en',
       };
     },
     methods: {

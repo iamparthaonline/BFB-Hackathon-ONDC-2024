@@ -1,7 +1,7 @@
 <template>
   <app-wrapper>
     <div class="product-packaging-scanner-container">
-      <nav-back />
+      <nav-back @goback="$router.go(-1)" />
       <h1>Scan and Validate Your Product Packaging</h1>
       <div v-if="status === 'INITIAL'">
         <p class="description">
