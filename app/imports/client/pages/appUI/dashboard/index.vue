@@ -3,29 +3,28 @@
     <div class="dashboard-container">
       <h1 id="heading"></h1>
       <ul class="meta-list">
-        <li>✓ Easily check for any legal queries of your business</li>
-        <li>✓ Quick and fast responses</li>
-        <li>✓ Trained models on real compliance documents</li>
-        <li>✓ Available in multiple languages</li>
-        <li>✓ Scan and get feedback on your product packaging</li>
+        <li>✓ {{ _('dashboard_page_feature_list_point1') }}</li>
+        <li>✓ {{ _('dashboard_page_feature_list_point2') }}</li>
+        <li>✓ {{ _('dashboard_page_feature_list_point3') }}</li>
+        <li>✓ {{ _('dashboard_page_feature_list_point4') }}</li>
+        <li>✓ {{ _('dashboard_page_feature_list_point5') }}</li>
       </ul>
       <div class="feature-item" v-ripple @click="goToPage('query')">
         <img src="/animated/question.gif" alt="" />
         <div>
-          <h2>Ask any questions</h2>
-          <p>Get answer to any legal or compliance related query for your business</p>
+          <h2>{{ _('dashboard_page_ask_any_question_title') }}</h2>
+          <p>{{ _('dashboard_page_ask_any_question_description') }}</p>
         </div>
       </div>
 
       <div class="feature-item" v-ripple @click="goToPage('product-packaging-scanner')">
         <img src="/animated/scanning.gif" alt="" />
         <div>
-          <h2>Scan product packages</h2>
-          <p>Check if your product packaging is compliant ready, get feedbacks</p>
+          <h2>{{ _('dashboard_page_ask_scan_product_title') }}</h2>
+          <p>{{ _('dashboard_page_ask_scan_product_description') }}</p>
         </div>
       </div>
-
-      <div v-if="isWeb" v-ripple class="download-app">Download Android App</div>
+      <div v-if="isWeb" v-ripple class="download-app">{{ _('dashboard_page_download_app') }}</div>
     </div>
   </app-wrapper>
 </template>
@@ -41,8 +40,8 @@
         isWeb: !Meteor.isCordova,
       };
     },
-    mounted: () => {
-      const actualHeading = 'Get Legally Complaint in India Easily';
+    mounted() {
+      const actualHeading = this._('dashboard_page_title');
       let i = 0;
       const speed = 50; /* The speed/duration of the effect in milliseconds */
 
