@@ -3,8 +3,20 @@
     <v-tabs color="deep-purple accent-4" left>
       <v-tab>AI Response</v-tab>
       <v-tab>Knowledge bank</v-tab>
-      <v-tab>Others</v-tab>
       <v-tab-item>
+        <v-col cols="4" class="mb-0">
+          <v-select
+            class="mt-3"
+            :items="lang"
+            v-model="selectedlang"
+            item-text="name"
+            item-value="value"
+            label="Language"
+            outlined
+            :loading="loading"
+            @change="$emit('changeLang', selectedlang)"
+          ></v-select>
+        </v-col>
         <div v-if="aiResponse" class="response">
           <p class="my-4">{{ aiResponse }}</p>
           <p class="my-4">For more information check out the Knowledge bank,</p>
@@ -27,7 +39,7 @@
             </div>
           </v-container>
           <v-container v-if="source" class="pdf-container d-none d-sm-none d-md-block flex-grow" fluid>
-            <pdfviewer :source="source" :pageNumber="pageNumber" :sourceIdx="sourceIdx" class="child" />
+            <pdfviewer :source="source" :content="content" class="child" />
           </v-container>
         </div>
       </v-tab-item>
@@ -37,34 +49,46 @@
 
 <script>
   import resultCardVue from './resultCard.vue';
-  import pdfviewer from './pdfViewer.vue';
+  import pdfviewer from './pdfViewerV2.vue';
 
   export default {
     name: 'Results',
     props: {
       aiResponse: String,
       semanticSearchResponse: Array,
+      defaultSelected: String,
+      loading: Boolean,
     },
     data() {
       return {
         source: null,
         pageNumber: null,
         sourceIdx: null,
-        loading: false,
+        content: '',
+        selectedlang: this.defaultSelected,
+        lang: [
+          {name: 'English', value: 'en'},
+          {name: 'हिंदी', value: 'hi'},
+          {name: 'ગુજરાતી', value: 'gu'},
+          {name: 'मराठी', value: 'mr'},
+          {name: 'ಕನ್ನಡ', value: 'kn'},
+        ],
+        constraints: {audio: true},
       };
     },
     components: {resultCardVue, pdfviewer},
     methods: {
-      openPdfViewer({source, pageNumber, sourceIdx}) {
+      openPdfViewer({source, pageNumber, sourceIdx, content}) {
         this.pageNumber = pageNumber;
         this.sourceIdx = sourceIdx;
         this.source = source;
+        this.content = content;
       },
     },
   };
 </script>
 
-<style scoped>
+<style lang="scss" scoped>
   .response {
     p {
       white-space: pre-line;
