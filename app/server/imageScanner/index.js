@@ -29,7 +29,6 @@ Meteor.methods({
         method: 'POST',
       })
         .then(result => {
-          console.log(result, 'res');
           if (result?.data) {
             resolve(result.data);
           } else {

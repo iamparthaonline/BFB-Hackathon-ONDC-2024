@@ -1,13 +1,16 @@
 <template>
   <div class="d-flex flex-column justify-center" style="width: 100%">
+    <nav-back @goback="$router.go(-1)" />
     <video v-show="!image" ref="video" width="640" height="480" autoplay></video>
     <img v-show="image" ref="photo" :src="image" />
     <canvas ref="canvas" width="640" height="480" style="display: none"></canvas>
     <v-row class="mt-3" align-content="center" justify="center">
       <v-btn outlined color="deep-purple lighten-1" class="mt-2" @click="takePhoto">
-        {{ !image ? 'Take Photo' : 'Retake' }}
+        {{ !image ? _('scanner_page_take_photo_button_text') : _('scanner_page_retake_photo_button_text') }}
       </v-btn>
-      <v-btn v-if="image" outlined color="deep-purple lighten-1" class="mt-2 ml-2" @click="submitImage">Submit</v-btn>
+      <v-btn v-if="image" outlined color="deep-purple lighten-1" class="mt-2 ml-2" @click="submitImage">
+        {{ _('scanner_page_submit_image_text') }}
+      </v-btn>
     </v-row>
   </div>
 </template>

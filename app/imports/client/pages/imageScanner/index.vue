@@ -149,7 +149,6 @@
       },
       async uploadImage(event) {
         this.imageBase64 = undefined;
-        console.log(event.target.files[0]);
         const base64 = await this.convertBase64(event.target.files[0]);
         this.imageBase64 = base64;
       },
@@ -170,10 +169,8 @@
       uploadImageToImageKit() {
         this.showLoader = true;
         Meteor.call('uploadImage', this.imageBase64, (error, response) => {
-          console.log(response.url);
           if (response && !error) {
             Meteor.call('getAIResponseForScannedImage', response.url, (err, res) => {
-              console.log(res);
               if (res && !err) {
                 this.responseText = res;
                 this.imageURL = response.url;

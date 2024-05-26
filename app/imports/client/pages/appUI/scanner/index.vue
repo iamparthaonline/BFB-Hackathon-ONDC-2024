@@ -1,101 +1,103 @@
 <template>
   <app-wrapper>
-    <div v-if="!openCamera" class="product-packaging-scanner-container">
+    <div>
       <nav-back @goback="$router.go(-1)" />
-      <h1>Scan and Validate Your Product Packaging</h1>
-      <div v-if="status === 'INITIAL'">
-        <p class="description">
-          Simply upload your product packaging photos to get insights on how does they fit with legal and compliance
-          side of the world
-        </p>
-        <ul>
-          <li>
-            <strong>Ensure Good Lighting:</strong>
-            Make sure the image is taken in well-lit conditions to enhance the readability and accuracy of text and
-            details on the product's backside.
-          </li>
-          <li>
-            <strong>High Resolution:</strong>
-            Use a high-resolution camera setting to capture the image.
-          </li>
-          <li>
-            <strong>No Obstructions:</strong>
-            Ensure that nothing is covering any part of the product's backside. Hands, fingers, or other objects should
-            not obstruct the view of the label.
-          </li>
-        </ul>
-        <div class="actions">
-          <input type="file" @change="uploadImage" ref="file" multiple accept="image/*" style="display: none" />
-          <div class="action-item" @click="$refs.file.click()" v-ripple>
-            <div class="action-img"><img src="/photo.png" /></div>
-            <h2>Upload Image</h2>
-            <p>Upload a photo from your device</p>
-          </div>
-          <div class="action-item" v-ripple @click="openCamera = true">
-            <div class="action-img"><img src="/camera.png" /></div>
-            <h2>Open Camera</h2>
-            <p>Click and upload a picture from camera</p>
-          </div>
-        </div>
-      </div>
-      <div v-else-if="status === 'LOADING' || status === 'SUCCESS' || status === 'REPORT'" class="scanning-image">
-        <img
-          :src="imageBase64"
-          :class="`uploaded-img ${status === 'LOADING' || status === 'SUCCESS' ? '' : 'success-report'}`"
-          alt=""
-        />
-
-        <div v-if="status === 'REPORT'" class="report-paragraph">
-          <h3>Report for your packaging</h3>
-          <p style="white-space: pre-line">
-            {{ responseText }}
+      <div v-if="!openCamera" class="product-packaging-scanner-container">
+        <h1>{{ _('scanner_page_title') }}</h1>
+        <div v-if="status === 'INITIAL'">
+          <p class="description">
+            {{ _('scanner_page_image_upload_instruction') }}
           </p>
-          <v-btn block @click="status = 'INITIAL'" class="mt-3" outlined color="#4b06ba">Check another</v-btn>
+          <ul>
+            <li>
+              <strong>{{ _('scanner_page_image_quality_instruction_point1_title') }}</strong>
+              {{ _('scanner_page_image_quality_instruction_point1_description') }}
+            </li>
+            <li>
+              <strong>{{ _('scanner_page_image_quality_instruction_point2_title') }}</strong>
+              {{ _('scanner_page_image_quality_instruction_point2_description') }}
+            </li>
+            <li>
+              <strong>{{ _('scanner_page_image_quality_instruction_point3_title') }}</strong>
+              {{ _('scanner_page_image_quality_instruction_point3_description') }}
+            </li>
+          </ul>
+          <div class="actions">
+            <input type="file" @change="uploadImage" ref="file" multiple accept="image/*" style="display: none" />
+            <div class="action-item" @click="$refs.file.click()" v-ripple>
+              <div class="action-img"><img src="/photo.png" /></div>
+              <h2>{{ _('scanner_page_upload_image_button_title') }}</h2>
+              <p>{{ _('scanner_page_upload_image_button_description') }}</p>
+            </div>
+            <div class="action-item" v-ripple @click="openCamera = true">
+              <div class="action-img"><img src="/camera.png" /></div>
+              <h2>{{ _('scanner_page_open_camera_button_title') }}</h2>
+              <p>{{ _('scanner_page_open_camera_button_description') }}</p>
+            </div>
+          </div>
         </div>
-        <v-overlay v-if="status === 'LOADING' || status === 'SUCCESS'">
-          <div class="loader-container" v-if="status === 'LOADING'">
-            <h2>Please wait</h2>
-            <img src="/search.gif" class="loader" alt="" />
-            <p>
-              Processing your image.
-              <br />
-              Note: Currently we are only processing food and electronics product
+        <div v-else-if="status === 'LOADING' || status === 'SUCCESS' || status === 'REPORT'" class="scanning-image">
+          <img
+            :src="imageBase64"
+            :class="`uploaded-img ${status === 'LOADING' || status === 'SUCCESS' ? '' : 'success-report'}`"
+            alt=""
+          />
+
+          <div v-if="status === 'REPORT'" class="report-paragraph">
+            <h3>{{ _('scanner_page_report_for_your_package_text') }}</h3>
+            <p style="white-space: pre-line">
+              {{ responseText }}
             </p>
+            <v-btn block @click="status = 'INITIAL'" class="mt-3" outlined color="#4b06ba">
+              {{ _('scanner_page_check_another_text') }}
+            </v-btn>
           </div>
-          <div class="loader-container" v-else>
-            <h2>Processing complete</h2>
-            <img src="/verified.gif" class="loader" alt="" />
-            <p>Completed the scanning and processing of your packaging image</p>
-          </div>
-        </v-overlay>
+          <v-overlay v-if="status === 'LOADING' || status === 'SUCCESS'">
+            <div class="loader-container" v-if="status === 'LOADING'">
+              <h2>{{ _('scanner_page_please_wait_text') }}</h2>
+              <img src="/search.gif" class="loader" alt="" />
+              <p>
+                {{ _('scanner_page_processing_image_text') }}
+                <br />
+                {{ _('scanner_page_note_text') }}
+              </p>
+            </div>
+            <div class="loader-container" v-else>
+              <h2>{{ _('scanner_page_process_completed_text') }}</h2>
+              <img src="/verified.gif" class="loader" alt="" />
+              <p>{{ _('scanner_page_scanning_completed_text') }}</p>
+            </div>
+          </v-overlay>
+        </div>
+        <div v-else>
+          <h4>
+            {{ _('query_page_umm_text') }}
+            <br />
+            {{ _('query_page_error_message') }}
+          </h4>
+
+          <v-btn block @click="status = 'INITIAL'" class="mb-3" outlined color="#4b06ba">
+            {{ _('query_page_try_again_button') }}
+          </v-btn>
+          <h3>{{ _('query_page_image_upload_instruction_text') }}</h3>
+          <ul>
+            <li>
+              <strong>{{ _('query_page_image_upload_instruction_point1_title') }}</strong>
+              {{ _('query_page_image_upload_instruction_point1_description') }}
+            </li>
+            <li>
+              <strong>{{ _('query_page_image_upload_instruction_point2_title') }}</strong>
+              {{ _('query_page_image_upload_instruction_point2_description') }}
+            </li>
+            <li>
+              <strong>{{ _('query_page_image_upload_instruction_point3_title') }}</strong>
+              {{ _('query_page_image_upload_instruction_point3_description') }}
+            </li>
+          </ul>
+        </div>
       </div>
-      <div v-else>
-        <h4>
-          Umm...
-          <br />
-          something went wrong. Please try again.
-        </h4>
-        <v-btn block @click="status = 'INITIAL'" class="mb-3" outlined color="#4b06ba">Try Again</v-btn>
-        <h3>Please consider below things before uploading a packaging image,</h3>
-        <ul>
-          <li>
-            <strong>Ensure Good Lighting:</strong>
-            Make sure the image is taken in well-lit conditions to enhance the readability and accuracy of text and
-            details on the product's backside.
-          </li>
-          <li>
-            <strong>High Resolution:</strong>
-            Use a high-resolution camera setting to capture the image.
-          </li>
-          <li>
-            <strong>No Obstructions:</strong>
-            Ensure that nothing is covering any part of the product's backside. Hands, fingers, or other objects should
-            not obstruct the view of the label.
-          </li>
-        </ul>
-      </div>
+      <CameraComponent v-else @imageClick="getImageClickedFromCamera" />
     </div>
-    <CameraComponent v-else @imageClick="getImageClickedFromCamera" />
   </app-wrapper>
 </template>
 
@@ -193,6 +195,7 @@
         }
         h3 {
           margin-top: 0;
+          margin-bottom: 210px;
         }
       }
       .uploaded-img {
@@ -205,12 +208,10 @@
         width: 200px;
         height: 200px;
         position: absolute;
-        opacity: 0.1;
         display: flex;
         align-self: center;
-        bottom: 20px;
-        right: 20px;
-        filter: grayscale(1);
+        top: 60px;
+        right: calc(50% - 100px);
       }
       .loader-container {
         padding: 20px;
