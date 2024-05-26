@@ -80,6 +80,8 @@
           {name: 'ગુજરાતી', value: 'gu'},
           {name: 'मराठी', value: 'mr'},
           {name: 'ಕನ್ನಡ', value: 'kn'},
+          {name: 'తెలుగు', value: 'te'},
+          {name: 'தமிழ்', value: 'ta'},
         ],
         active_tab: 0,
       };
