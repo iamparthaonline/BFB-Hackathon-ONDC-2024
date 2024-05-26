@@ -1,5 +1,6 @@
 import Vue from 'vue';
 import en from '../i18n/en.json';
+import hi from '../i18n/hi.json';
 import mr from '../i18n/mr.json';
 import gu from '../i18n/gu.json';
 import ta from '../i18n/ta.json';
@@ -11,6 +12,7 @@ const locales = {
   gu,
   ta,
   kn,
+  hi,
 };
 
 const state = Vue.observable({
@@ -49,8 +51,9 @@ export default {
       return translate(key);
     },
     setLocale(locale) {
-      loadLocale(locale);
+      // loadLocale(locale);
       localStorage.setItem('language', locale);
+      this.$router.go();
     },
   },
 };

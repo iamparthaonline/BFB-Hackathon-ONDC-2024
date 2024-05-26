@@ -37,5 +37,19 @@
   "query_page_image_upload_instruction_point1_description": "प्रतिमेच्या वाचनक्षमता आणि अचूकतेसाठी प्रतिमा चांगल्या प्रकाशात घेतली असल्याचे सुनिश्चित करा.",
   "query_page_image_upload_instruction_point2_title": "उच्च रिझोल्यूशन:",
   "query_page_image_upload_instruction_point2_description": "प्रतिमा कॅप्चर करण्यासाठी उच्च रिझोल्यूशन कॅमेरा सेटिंग वापरा.",
-  "query_page_bhashini_text": "मल्टी भाषा समर्थन"
+  "query_page_bhashini_text": "मल्टी भाषा समर्थन","query_page_answer_to_your_query": "Answer to your query",
+  "query_page_finish_recording": "रेकॉर्डिंग पूर्ण करा",
+  "query_page_processing": "प्रक्रिया करत आहे",
+  "query_page_reset": "रीसेट करा",
+  "query_page_submit": "प्रस्तुत करणे",
+  "query_page_second": "सेकंद",
+  "result_card_source": "स्रोत",
+  "result_card_read_more": "पुढे वाचा",
+  "result_card_view_pdf": "PDF पहा",
+  "result_card_full_text": "संपूर्ण मजकूर",
+  "result_card_close": "बंद करणे",
+  "result_page_ai_response": "AI प्रतिसाद",
+  "result_page_knowledge_bank": "नॉलेज बँक",
+  "result_page_check_out": "अधिक माहितीसाठी नॉलेज बँक पहा",
+  "result_page_ask_another_question": "दुसरा प्रश्न विचारा"
 }

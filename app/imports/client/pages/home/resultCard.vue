@@ -7,7 +7,9 @@
         </v-progress-linear>
       </div> -->
       <div class="text--primary mb-8">{{ result.page_content.substring(0, 300) }}...</div>
-      <div class="text--primary">source: {{ result.source }}#page={{ result.source_page_number + 1 }}</div>
+      <div class="text--primary">
+        {{ _('result_card_source') }}: {{ result.source }}#page={{ result.source_page_number + 1 }}
+      </div>
     </v-card-text>
     <v-card-actions>
       <v-btn
@@ -18,19 +20,19 @@
       >
         <v-icon>mdi-open-in-new</v-icon>
       </v-btn>
-      <v-btn text color="deep-purple lighten-1" @click="reveal = true">Read More</v-btn>
-      <v-btn text color="deep-purple lighten-1" @click="openSource">View PDF</v-btn>
+      <v-btn text color="deep-purple lighten-1" @click="reveal = true">{{ _('result_card_read_more') }}</v-btn>
+      <v-btn text color="deep-purple lighten-1" @click="openSource">{{ _('result_card_view_pdf') }}</v-btn>
     </v-card-actions>
     <v-expand-transition>
       <v-card v-if="reveal" class="transition-fast-in-fast-out v-card--reveal overflow-auto" style="height: 100%">
         <v-card-text class="pb-0">
-          <p class="text-h4 text--primary">Full Text</p>
+          <p class="text-h4 text--primary">{{ _('result_card_full_text') }}</p>
           <p>
             {{ result.page_content }}
           </p>
         </v-card-text>
         <v-card-actions class="pt-0">
-          <v-btn text color="deep-purple lighten-1" @click="reveal = false">Close</v-btn>
+          <v-btn text color="deep-purple lighten-1" @click="reveal = false">{{ _('result_card_close') }}</v-btn>
         </v-card-actions>
       </v-card>
     </v-expand-transition>

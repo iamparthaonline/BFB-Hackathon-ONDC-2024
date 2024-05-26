@@ -37,5 +37,20 @@
   "query_page_image_upload_instruction_point1_description": "படத்தின் வாசிப்புத்தன்மை மற்றும் துல்லியத்தை அதிகரிக்க படம் நன்கு வெளிச்சமுள்ள சூழ்நிலையில் எடுக்கப்பட வேண்டும்.",
   "query_page_image_upload_instruction_point2_title": "உயர் தீர்மானம்:",
   "query_page_image_upload_instruction_point2_description": "படத்தைப் பிடிக்க உயர்திரைப்பட கேமரா அமைப்பை பயன்படுத்தவும்.",
-  "query_page_bhashini_text": "பல மொழி ஆதரவு"
+  "query_page_bhashini_text": "பல மொழி ஆதரவு",
+  "query_page_answer_to_your_query": "உங்கள் கேள்விக்கு பதில்",
+  "query_page_finish_recording": "பதிவை முடிக்கவும்",
+  "query_page_processing": "பதனம் செய்தல்",
+  "query_page_reset": "மீட்டமை",
+  "query_page_submit": "தாழ்ந்து நட",
+  "query_page_second": "வினாடி",
+  "result_card_source": "மூலம்",
+  "result_card_read_more": "மேலும் படிக்க",
+  "result_card_view_pdf": "PDF பார்க்கவும்",
+  "result_card_full_text": "முழு உரை",
+  "result_card_close": "மூடு",
+  "result_page_ai_response": "AI பதில்",
+  "result_page_knowledge_bank": "அறிவு வங்கி",
+  "result_page_check_out": "மேலும் தகவலுக்கு, அறிவு வங்கியைப் பார்க்கவும்",
+  "result_page_ask_another_question": "இன்னொரு கேள்வி கேள்"
 }

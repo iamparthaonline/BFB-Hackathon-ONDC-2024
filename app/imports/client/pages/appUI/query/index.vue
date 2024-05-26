@@ -3,7 +3,7 @@
     <div class="product-packaging-scanner-container">
       <nav-back @goback="goback" />
       <h1 v-if="status === 'INITIAL'">{{ _('query_page_title') }}</h1>
-      <h1 v-else>Answer to your query</h1>
+      <h1 v-else>{{ _('query_page_answer_to_your_query') }}</h1>
       <div v-if="status === 'INITIAL'">
         <p class="description">
           {{ _('query_page_description') }}
@@ -87,17 +87,17 @@
             </div>
             <div v-ripple class="record-action" v-else-if="recording === 'RECORDING'" @click="save">
               <img src="/stop-record.png" alt="" />
-              <span>Finish Recording</span>
+              <span>{{ _('query_page_finish_recording') }}</span>
             </div>
             <div class="record-action" v-else-if="recording === 'PROCESSING'">
               <img src="/stop-record.png" alt="" />
-              <span>Processing</span>
+              <span>{{ _('query_page_processing') }}</span>
             </div>
           </div>
           <figure v-if="audioURL" class="my-2">
             <audio controls :src="audioURL"></audio>
             <div class="my-2">
-              <v-btn type="submit" color="red" outlined @click="reset">Reset</v-btn>
+              <v-btn type="submit" color="red" outlined @click="reset">{{ _('query_page_reset') }}</v-btn>
             </div>
           </figure>
           <v-select
@@ -118,7 +118,7 @@
             :disabled="disabledAudioSubBtn"
             @click="searchQueryWithAudio"
           >
-            Submit
+            {{ _('query_page_submit') }}
           </v-btn>
         </div>
       </div>
@@ -135,7 +135,7 @@
         <div v-if="status === 'REPORT'" class="report-paragraph">
           <v-alert v-if="timeTaken && !loading" dense text type="success">
             {{ _('query_page_processed_your_query_in') }}
-            <strong>{{ parseInt(timeTaken) }} seconds</strong>
+            <strong>{{ parseInt(timeTaken) }} {{ _('query_page_second') }}</strong>
           </v-alert>
 
           <results
@@ -146,15 +146,14 @@
             :loading="langChangeLoading"
             @changeLang="getResponseInSelectedLang"
           ></results>
-
-          <v-btn block @click="status = 'INITIAL'" class="mt-3" outlined color="#4b06ba">Search more query</v-btn>
+          <v-btn block @click="status = 'INITIAL'" class="mt-3" outlined color="#4b06ba">Ask another question</v-btn>
         </div>
         <v-overlay v-if="status === 'LOADING' || status === 'SUCCESS'">
           <div class="loader-container" v-if="status === 'LOADING'">
             <h2>{{ _('query_page_please_wait_text') }}</h2>
             <img src="/ai.gif" class="loader" alt="" />
             <p>
-              {{ _('query_page_processing_image_text') }}
+              {{ audioURL ? 'Processing your audio text query' : 'Processing your text query' }}
               <br />
               {{ _('query_page_processing_image_disclaimer') }}
             </p>
@@ -246,7 +245,7 @@
       aiResponse: [],
       loading: false, // to avoid error msg
       invalid: false, // to avoid error msg
-      defaultSelected: 'en',
+      defaultSelected: localStorage.getItem('language') || 'en',
       lang: [
         {name: 'English', value: 'en'},
         {name: 'हिंदी', value: 'hi'},
