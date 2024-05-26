@@ -71,7 +71,6 @@
 
 <style lang="scss" scoped>
   .dashboard-container {
-    // height: 100vh;
     margin-top: 80px;
     .download-app {
       background-color: #7930f0;
@@ -88,8 +87,10 @@
         background-color: #4b06ba;
       }
     }
-    h1 {
-      min-height: 78px;
+    @media only screen and (max-width: 600px) {
+      h1 {
+        min-height: 78px;
+      }
     }
   }
   .meta-list {
