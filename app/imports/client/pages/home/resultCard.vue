@@ -11,17 +11,22 @@
         {{ _('result_card_source') }}: {{ result.source }}#page={{ result.source_page_number + 1 }}
       </div>
     </v-card-text>
-    <v-card-actions>
+    <v-card-actions class="flex-wrap">
       <v-btn
         text
+        class="flex-shrink-1"
         color="deep-purple lighten-1"
         :href="`${result.source}#page=${result.source_page_number + 1}`"
         target="_blank"
       >
         <v-icon>mdi-open-in-new</v-icon>
       </v-btn>
-      <v-btn text color="deep-purple lighten-1" @click="reveal = true">{{ _('result_card_read_more') }}</v-btn>
-      <v-btn text color="deep-purple lighten-1" @click="openSource">{{ _('result_card_view_pdf') }}</v-btn>
+      <v-btn text class="flex-shrink-1" color="deep-purple lighten-1" @click="reveal = true">
+        {{ _('result_card_read_more') }}
+      </v-btn>
+      <v-btn text class="flex-shrink-1" color="deep-purple lighten-1" @click="openSource">
+        {{ _('result_card_view_pdf') }}
+      </v-btn>
     </v-card-actions>
     <v-expand-transition>
       <v-card v-if="reveal" class="transition-fast-in-fast-out v-card--reveal overflow-auto" style="height: 100%">
