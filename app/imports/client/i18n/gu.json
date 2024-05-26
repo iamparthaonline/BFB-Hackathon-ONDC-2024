@@ -37,5 +37,20 @@
   "query_page_image_upload_instruction_point1_description": "છબીના વાંચનક્ષમતા અને ચોકસાઈને વધારવા માટે છબી સારી રીતે પ્રકાશિત પરિસ્થિતિઓમાં લેવામાં આવવી જોઈએ.",
   "query_page_image_upload_instruction_point2_title": "ઉચ્ચ રિઝોલ્યુશન:",
   "query_page_image_upload_instruction_point2_description": "છબીને કૅપ્ચર કરવા માટે ઉચ્ચ રિઝોલ્યુશન કેમેરા સેટિંગનો ઉપયોગ કરો.",
-  "query_page_bhashini_text": "મલ્ટિ ભાષા આધાર"
+  "query_page_bhashini_text": "મલ્ટિ ભાષા આધાર",
+  "query_page_answer_to_your_query": "તમારા પ્રશ્નના જવાબ",
+  "query_page_finish_recording": "રેકોર્ડિંગ સમાપ્ત કરો",
+  "query_page_processing": "પ્રક્રિયા",
+  "query_page_reset": "રીસેટ કરો",
+  "query_page_submit": "સબમિટ કરો",
+  "query_page_second": "પળ",
+  "result_card_source": "સ્ત્રોત",
+  "result_card_read_more": "વધુ વાંચો",
+  "result_card_view_pdf": "PDF જુઓ",
+  "result_card_full_text": "સંપૂર્ણ લખાણ",
+  "result_card_close": "બંધ",
+  "result_page_ai_response": "AI પ્રતિભાવ",
+  "result_page_knowledge_bank": "જ્ઞાન બેંક",
+  "result_page_check_out": "વધુ માહિતી માટે નોલેજ બેંક તપાસો",
+  "result_page_ask_another_question": "બીજો પ્રશ્ન પૂછો"
 }
