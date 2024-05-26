@@ -23,12 +23,13 @@ Meteor.methods({
     });
   },
   getAIResponseForScannedImage(imageURL) {
-    const urlObject = imageScannerUrls.findOne({});
+    // const urlObject = imageScannerUrls.findOne({});
     return new Promise(function (resolve, reject) {
-      axios(`${urlObject.url}/imageRecognition?imageURL=${imageURL}`, {
+      axios(`${Meteor.settings.public.API_HOST}/imageRecognition?imageURL=${imageURL}`, {
         method: 'POST',
       })
         .then(result => {
+          console.log(result, 'res');
           if (result?.data) {
             resolve(result.data);
           } else {

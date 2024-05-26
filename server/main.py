@@ -16,6 +16,11 @@ from langchain_community.document_transformers import (
     LongContextReorder,
 )
 from langchain.callbacks.base import BaseCallbackHandler
+import requests
+import base64
+import json
+from io import BytesIO
+from PIL import Image
 import os
 # import langchain
 # langchain.debug = True
@@ -174,8 +179,109 @@ def generateAIResponseFromTheQuery(query: Query) -> str:
         return res
 
 
+def encode_image_to_base64(image_path):
+    response = requests.get(image_path)
+    response.raise_for_status()  # Check that the request was successful
+
+    # Convert the image to base64
+    image_base64 = base64.b64encode(response.content).decode('utf-8')
+
+    return image_base64
+
+
+@app.post("/imageRecognition")
+def addOneDocumentToKnowledgeBase(imageURL: str, query: str = None) -> str:
+    response = requests.get(imageURL)
+    if response.status_code == 200:
+        image = Image.open(BytesIO(response.content)).convert('RGB')
+        buffered = BytesIO()
+        image.save(buffered, format="JPEG")
+        image_base64 = base64.b64encode(buffered.getvalue()).decode('utf-8')
+    else:
+        print('Failed to fetch the image from the URL')
+        exit()
+
+    prompt = """You are a legal complience assistant who will identify the product packaging and labelling , you will check if product has The presence of an FSSAI logo and license number.
+The list of ingredients and their respective quantities.
+Nutritional information per serving size.
+Declaration of food additives.
+Net quantity.
+Batch or code number.
+Date of manufacture and expiry.
+Instructions for use.
+Country of origin for imported products.
+if anything from above is missing , then mention it that you couldn't be able to detect that point.
+"""
+
+    # Payload to be sent to the API
+    payload = {
+        'model_path': 'liuhaotian/llava-v1.6-mistral-7b',
+        'image_base64': image_base64,
+        'prompt': prompt,
+        'temperature': 0.2,
+        'max_new_tokens': 512,
+        'stream': False  # Change to True if you want to use streaming response
+    }
+
+    # Headers for the request
+    headers = {
+        'Content-Type': 'application/json'
+    }
+
+    # Send POST request to the API
+    response = requests.post(
+        config['LLAVA_HOST'], headers=headers, data=json.dumps(payload))
+
+    # Check if the request was successful
+    if response.status_code == 200:
+        # Parse the JSON response
+        response_data = response.json()
+        if response_data['status'] == 'ok':
+            print('Response:', response_data['response'])
+            return response_data['response']
+        else:
+            print('Error:', response_data['msg'])
+    else:
+        print('Failed to connect to the API:', response.status_code)
+        print('Response:', response.text)
+    # outputs = pipe(image, prompt=prompt, generate_kwargs={
+    #                "temperature": 0.3, "max_length": 500, "max_new_tokens": 500})
+    # conversation_text = outputs[0]["generated_text"]
+    # lines = conversation_text.split('\n')
+
+    # # Initialize an empty string for the assistant's reply
+    # assistant_reply = ""
+
+    # # Iterate through each line to find the assistant's reply
+    # for line in lines:
+    #     # Check if the line starts with "ASSISTANT:"
+    #     if line.startswith("ASSISTANT:"):
+    #         # Extract the assistant's reply
+    #         assistant_reply = line[len("ASSISTANT:"):].strip()
+    #         break  # Stop the loop as we found the assistant's reply
+    # return assistant_reply
+    # if True:
+    #     if r.encoding is None:
+    #         r.encoding = 'utf-8'
+
+    #     for line in r.iter_lines(decode_unicode=True):
+    #         if line:
+    #             print(line, end='')
+
+    #     time_taken = timer.get_elapsed_time()
+    #     print('')
+    # else:
+    #     time_taken = timer.get_elapsed_time()
+    #     resp_json = r.json()
+    #     print(json.dumps(resp_json, indent=4, default=str))
+
+    # print(f'Total time taken for API call {time_taken} seconds')
+
+
 if __name__ == '__main__':
-    url = "https://www.fssai.gov.in/upload/notifications/2022/06/62ac3f9dba33cGazette_Notification_Vegan_Food_17_06_2022.pdf"
-    q = Query(queryText="I want to sell cheese online", k=25)
-    print(performSemanticSearch("I want to sell cheese online"))
-    generateAIResponseFromTheQuery(q)
+    # url = "https://www.fssai.gov.in/upload/notifications/2022/06/62ac3f9dba33cGazette_Notification_Vegan_Food_17_06_2022.pdf"
+    # q = Query(queryText="I want to sell cheese online", k=25)
+    # print(performSemanticSearch("I want to sell cheese online"))
+    # generateAIResponseFromTheQuery(q)
+    addOneDocumentToKnowledgeBase(
+        "https://ik.imagekit.io/4rp923pit/1716536419648-scannedimage_-ED7SK53p.jpg?updatedAt=1716536423965")

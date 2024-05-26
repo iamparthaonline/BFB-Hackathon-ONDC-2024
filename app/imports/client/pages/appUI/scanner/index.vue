@@ -1,6 +1,6 @@
 <template>
   <app-wrapper>
-    <div class="product-packaging-scanner-container">
+    <div v-if="!openCamera" class="product-packaging-scanner-container">
       <nav-back @goback="$router.go(-1)" />
       <h1>Scan and Validate Your Product Packaging</h1>
       <div v-if="status === 'INITIAL'">
@@ -25,13 +25,13 @@
           </li>
         </ul>
         <div class="actions">
-          <div class="action-item" @click="process" v-ripple>
+          <input type="file" @change="uploadImage" ref="file" multiple accept="image/*" style="display: none" />
+          <div class="action-item" @click="$refs.file.click()" v-ripple>
             <div class="action-img"><img src="/photo.png" /></div>
-
             <h2>Upload Image</h2>
             <p>Upload a photo from your device</p>
           </div>
-          <div class="action-item" v-ripple>
+          <div class="action-item" v-ripple @click="openCamera = true">
             <div class="action-img"><img src="/camera.png" /></div>
             <h2>Open Camera</h2>
             <p>Click and upload a picture from camera</p>
@@ -40,18 +40,15 @@
       </div>
       <div v-else-if="status === 'LOADING' || status === 'SUCCESS' || status === 'REPORT'" class="scanning-image">
         <img
-          src="/test.webp"
+          :src="imageBase64"
           :class="`uploaded-img ${status === 'LOADING' || status === 'SUCCESS' ? '' : 'success-report'}`"
           alt=""
         />
+
         <div v-if="status === 'REPORT'" class="report-paragraph">
           <h3>Report for your packaging</h3>
-          <p>
-            Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et
-            dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex
-            ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat
-            nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit
-            anim id est laborum.
+          <p style="white-space: pre-line">
+            {{ responseText }}
           </p>
           <v-btn block @click="status = 'INITIAL'" class="mt-3" outlined color="#4b06ba">Check another</v-btn>
         </div>
@@ -98,20 +95,26 @@
         </ul>
       </div>
     </div>
+    <CameraComponent v-else @imageClick="getImageClickedFromCamera" />
   </app-wrapper>
 </template>
 
 <script>
   import appWrapper from '../../../components/appWrapper.vue';
   import navBack from '../../../components/navBack.vue';
+  import CameraComponent from './takePhoto.vue';
 
   export default {
-    components: {appWrapper, navBack},
+    components: {appWrapper, navBack, CameraComponent},
     data() {
       return {
         status: 'INITIAL', // LOADING || SUCCESS
+        imageBase64: undefined,
+        responseText: undefined,
+        openCamera: false,
       };
     },
+
     methods: {
       process() {
         this.status = 'LOADING';
@@ -121,6 +124,49 @@
         setTimeout(() => {
           this.status = 'REPORT';
         }, 6000);
+      },
+
+      async uploadImage(event) {
+        this.imageBase64 = undefined;
+        const base64 = await this.convertBase64(event.target.files[0]);
+        this.imageBase64 = base64;
+        this.uploadImageToImageKit();
+      },
+      convertBase64(file) {
+        return new Promise((resolve, reject) => {
+          const fileReader = new FileReader();
+          fileReader.readAsDataURL(file);
+
+          fileReader.onload = () => {
+            resolve(fileReader.result);
+          };
+
+          fileReader.onerror = error => {
+            reject(error);
+          };
+        });
+      },
+      uploadImageToImageKit() {
+        this.status = 'LOADING';
+        Meteor.call('uploadImage', this.imageBase64, (error, response) => {
+          if (response && !error) {
+            Meteor.call('getAIResponseForScannedImage', response.url, (err, res) => {
+              if (res) {
+                this.status = 'SUCCESS';
+                setTimeout(() => {
+                  this.responseText = res;
+                  this.imageURL = response.url;
+                  this.status = 'REPORT';
+                }, 2000);
+              } else this.status = 'ERROR';
+            });
+          }
+        });
+      },
+      getImageClickedFromCamera(image) {
+        this.openCamera = false;
+        this.imageBase64 = image;
+        this.uploadImageToImageKit();
       },
     },
   };
