@@ -1,10 +1,10 @@
 <template>
   <div class="mt-4 main-container">
-    <v-tabs color="deep-purple accent-4" left>
+    <v-tabs color="deep-purple accent-4" left v-model="active_tab">
       <v-tab>AI Response</v-tab>
       <v-tab>Knowledge bank</v-tab>
       <v-tab-item>
-        <v-col cols="4" class="mb-0">
+        <v-col sm="4" md-cols="6" class="mb-0">
           <v-select
             class="mt-3"
             :items="lang"
@@ -17,13 +17,21 @@
             @change="$emit('changeLang', selectedlang)"
           ></v-select>
         </v-col>
-        <div v-if="aiResponse" class="response">
-          <p class="my-4">{{ aiResponse }}</p>
-          <p class="my-4">For more information check out the Knowledge bank,</p>
+        <div v-if="aiResponse.length" class="response">
+          <template>
+            <p v-for="(text, idx) in aiResponse" :key="idx" class="my-0">
+              {{ text.target ? text.target : text.source }}
+            </p>
+          </template>
+
+          <p class="my-4">
+            For more information check out the
+            <v-btn outlined color="deep-purple accent-4" @click="testfn">Knowledge bank</v-btn>
+          </p>
         </div>
       </v-tab-item>
       <v-tab-item>
-        <div class="results-list d-flex flex-row">
+        <div ref="test" class="results-list d-flex flex-row">
           <v-container class="card">
             <div class="d-flex flex-row flex-wrap">
               <result-card-vue
@@ -39,7 +47,7 @@
             </div>
           </v-container>
           <v-container v-if="source" class="pdf-container d-none d-sm-none d-md-block flex-grow" fluid>
-            <pdfviewer :source="source" :content="content" class="child" />
+            <pdfviewer :source="source" :content="content" :page="pageNumber" class="child" />
           </v-container>
         </div>
       </v-tab-item>
@@ -54,7 +62,7 @@
   export default {
     name: 'Results',
     props: {
-      aiResponse: String,
+      aiResponse: Array,
       semanticSearchResponse: Array,
       defaultSelected: String,
       loading: Boolean,
@@ -73,7 +81,7 @@
           {name: 'मराठी', value: 'mr'},
           {name: 'ಕನ್ನಡ', value: 'kn'},
         ],
-        constraints: {audio: true},
+        active_tab: 0,
       };
     },
     components: {resultCardVue, pdfviewer},
@@ -83,6 +91,10 @@
         this.sourceIdx = sourceIdx;
         this.source = source;
         this.content = content;
+      },
+      testfn() {
+        this.active_tab = 1;
+        window.scrollTo(0, 0);
       },
     },
   };
@@ -101,6 +113,10 @@
     overflow-y: auto;
     .card {
       max-width: 50%;
+
+      @media only screen and (max-width: 600px) {
+        max-width: calc(100dvw - 40px);
+      }
     }
     .pdf-container {
       max-height: fit-content;

@@ -48,7 +48,7 @@
       async searchQuery(queryText) {
         this.loading = true;
         this.semanticSearchResponse = '';
-        this.aiResponse = '';
+        this.aiResponse = [];
         this.response = false;
         const startTime = +new Date();
         const response = await fetch(`${Meteor.settings.public.API_HOST}/generate-AI-response`, {

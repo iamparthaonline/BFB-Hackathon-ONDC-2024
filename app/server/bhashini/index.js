@@ -234,11 +234,9 @@ Meteor.methods({
         },
       ],
       inputData: {
-        input: [
-          {
-            source: textContent,
-          },
-        ],
+        input: textContent.map(text => {
+          return {source: text.source};
+        }),
       },
     };
     const res = Meteor.call('createPostRequest', callbackUrl, computeCallConfig, {
