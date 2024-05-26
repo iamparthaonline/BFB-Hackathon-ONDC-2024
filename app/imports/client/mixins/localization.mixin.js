@@ -5,6 +5,7 @@ import mr from '../i18n/mr.json';
 import gu from '../i18n/gu.json';
 import ta from '../i18n/ta.json';
 import kn from '../i18n/kn.json';
+import te from '../i18n/te.json';
 
 const locales = {
   en,
@@ -13,6 +14,7 @@ const locales = {
   ta,
   kn,
   hi,
+  te,
 };
 
 const state = Vue.observable({

@@ -77,5 +77,7 @@
   "scanner_page_scanning_completed_text": "तुमच्या पॅकेजिंग इमेजचे स्कॅनिंग आणि प्रक्रिया पूर्ण केली",
   "scanner_page_take_photo_button_text": "छायाचित्र घे",
   "scanner_page_retake_photo_button_text": "पुन्हा घ्या",
-  "scanner_page_submit_image_text": "प्रस्तुत करणे"
+  "scanner_page_submit_image_text": "प्रस्तुत करणे",
+  "query_page_enter_your_query_text": "तुमची क्वेरी एंटर करा",
+  "query_page_language_text": "भाषा"
 }

@@ -34,7 +34,7 @@
                   outlined
                   :counter="200"
                   :error-messages="errors"
-                  label="Enter your query"
+                  :label="_('query_page_enter_your_query_text')"
                   required
                 ></v-textarea>
                 <v-select
@@ -43,7 +43,7 @@
                   v-model="defaultSelected"
                   item-text="name"
                   item-value="value"
-                  label="Language"
+                  :label="_('query_page_language_text')"
                   outlined
                 ></v-select>
               </validation-provider>
@@ -106,7 +106,7 @@
             v-model="defaultSelected"
             item-text="name"
             item-value="value"
-            label="Language"
+            :label="_('query_page_language_text')"
             outlined
           ></v-select>
           <v-btn
@@ -146,7 +146,9 @@
             :loading="langChangeLoading"
             @changeLang="getResponseInSelectedLang"
           ></results>
-          <v-btn block @click="status = 'INITIAL'" class="mt-3" outlined color="#4b06ba">Ask another question</v-btn>
+          <v-btn block @click="status = 'INITIAL'" class="mt-3" outlined color="#4b06ba">
+            {{ _('result_page_ask_another_question') }}
+          </v-btn>
         </div>
         <v-overlay v-if="status === 'LOADING' || status === 'SUCCESS'">
           <div class="loader-container" v-if="status === 'LOADING'">

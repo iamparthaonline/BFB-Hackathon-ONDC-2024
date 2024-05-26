@@ -9,7 +9,7 @@
             v-model="defaultSelected"
             item-text="name"
             item-value="value"
-            label="Language"
+            :label="_('query_page_language_text')"
           ></v-select>
 
           <v-btn block class="mb-3" color="#4b06ba" @click="changeLanguage">Save</v-btn>

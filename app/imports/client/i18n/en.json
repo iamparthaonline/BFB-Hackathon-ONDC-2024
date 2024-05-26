@@ -77,5 +77,7 @@
   "scanner_page_scanning_completed_text": "Completed the scanning and processing of your packaging image",
   "scanner_page_take_photo_button_text": "Take Photo",
   "scanner_page_retake_photo_button_text": "Retake",
-  "scanner_page_submit_image_text": "Submit"
+  "scanner_page_submit_image_text": "Submit",
+  "query_page_enter_your_query_text": "Enter your query",
+  "query_page_language_text": "Language"
 }
