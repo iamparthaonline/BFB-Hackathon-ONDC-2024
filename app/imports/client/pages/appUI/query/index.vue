@@ -2,27 +2,27 @@
   <app-wrapper ref="appWrapper">
     <div class="product-packaging-scanner-container">
       <nav-back @goback="goback" />
-      <h1 v-if="status === 'INITIAL'">Ask your questions</h1>
+      <h1 v-if="status === 'INITIAL'">{{ _('query_page_title') }}</h1>
       <h1 v-else>Answer to your query</h1>
       <div v-if="status === 'INITIAL'">
         <p class="description">
-          Ask any questions about the legal and compliance of your business.
+          {{ _('query_page_description') }}
           <br />
-          E.g. "i want to sell ice creams online on ecommerce platform, what regulations do I have to follow"
+          {{ _('query_page_description_example') }}
         </p>
 
         <div class="actions">
           <div :class="`action-item ${tab === 'WRITE' ? 'active' : ''}`" @click="changeTab('WRITE')" v-ripple>
             <div class="action-img"><img src="/keyboard.png" /></div>
-            <h2>I want to write</h2>
+            <h2>{{ _('query_page_i_want_to_write_button') }}</h2>
           </div>
           <div :class="`action-item ${tab === 'TALK' ? 'active' : ''}`" @click="changeTab('TALK')" v-ripple>
             <div class="action-img"><img src="/microphone.png" /></div>
-            <h2>I want to talk</h2>
+            <h2>{{ _('query_page_i_want_to_talk_button') }}</h2>
           </div>
         </div>
         <div v-if="tab === 'WRITE'" class="write-container">
-          <h2>Write your query in your language</h2>
+          <h2>{{ _('query_page_write_in_your_lang_text') }}</h2>
 
           <validation-observer ref="observer" v-slot="{invalid}">
             <form @submit.prevent="submit" class="mt-4">
@@ -56,7 +56,7 @@
                   :loading="loadingSubmitBtn"
                   :disabled="invalid || loading"
                 >
-                  Submit
+                  {{ _('query_page_submit_button') }}
                 </v-btn>
                 <!-- <v-btn @click="clear" :disabled="loading" color="#ccc">Clear</v-btn> -->
               </div>
@@ -64,7 +64,7 @@
           </validation-observer>
         </div>
         <div v-else-if="tab === 'TALK'" class="write-container talk-container">
-          <h2>Speak your query in your language</h2>
+          <h2>{{ _('query_page_speak_in_your_lang_text') }}</h2>
           <div class="recorder-wrapper">
             <div class="recorder-time-action">
               <div class="recorder-time">{{ timerString }}</div>
@@ -78,12 +78,12 @@
                 outlined
                 @click="cancel"
               >
-                Cancel
+                {{ _('query_page_cancel_button') }}
               </v-btn>
             </div>
             <div v-ripple class="record-action" v-if="recording === 'INITIAL'" @click="startRecording">
               <img src="/start-record.png" alt="" />
-              <span>Start Recording</span>
+              <span>{{ _('query_page_start_recording_text') }}</span>
             </div>
             <div v-ripple class="record-action" v-else-if="recording === 'RECORDING'" @click="save">
               <img src="/stop-record.png" alt="" />
@@ -124,9 +124,9 @@
       </div>
       <div v-else-if="status === 'LOADING' || status === 'SUCCESS' || status === 'REPORT'" class="scanning-image">
         <div class="original-query mb-3">
-          <h2>Your Query</h2>
+          <h2>{{ _('query_page_your_query_text') }}</h2>
           <figure v-if="audioURL" class="my-2">
-            <figcaption>Listen to your query</figcaption>
+            <figcaption>{{ _('query_page_listen_your_query_text') }}</figcaption>
             <audio controls :src="audioURL"></audio>
           </figure>
 
@@ -134,7 +134,7 @@
         </div>
         <div v-if="status === 'REPORT'" class="report-paragraph">
           <v-alert v-if="timeTaken && !loading" dense text type="success">
-            Processed your query in
+            {{ _('query_page_processed_your_query_in') }}
             <strong>{{ parseInt(timeTaken) }} seconds</strong>
           </v-alert>
 
@@ -151,32 +151,50 @@
         </div>
         <v-overlay v-if="status === 'LOADING' || status === 'SUCCESS'">
           <div class="loader-container" v-if="status === 'LOADING'">
-            <h2>Please wait</h2>
+            <h2>{{ _('query_page_please_wait_text') }}</h2>
             <img src="/ai.gif" class="loader" alt="" />
             <p>
-              Processing your query.
+              {{ _('query_page_processing_image_text') }}
               <br />
-              Note: Currently we are only processing food and electronics categories
+              {{ _('query_page_processing_image_disclaimer') }}
             </p>
           </div>
           <div class="loader-container" v-else>
-            <h2>Processing complete</h2>
+            <h2>{{ _('query_page_processing_complete_text') }}</h2>
             <img src="/verified.gif" class="loader" alt="" />
-            <p>Successfully completed processing your query.</p>
+            <p>{{ _('query_page_completed_scanning_text') }}</p>
           </div>
         </v-overlay>
       </div>
       <div v-else>
         <h4>
-          Umm...
+          {{ _('query_page_umm_text') }}
           <br />
-          something went wrong. Please try again.
+          {{ _('query_page_error_message') }}
         </h4>
-        <v-btn block @click="status = 'INITIAL'" class="mb-3" outlined color="#4b06ba">Try Again</v-btn>
+
+        <v-btn block @click="status = 'INITIAL'" class="mb-3" outlined color="#4b06ba">
+          {{ _('query_page_try_again_button') }}
+        </v-btn>
+        <h3>{{ _('query_page_image_upload_instruction_text') }}</h3>
+        <ul>
+          <li>
+            <strong>{{ _('query_page_image_upload_instruction_point1_title') }}</strong>
+            {{ _('query_page_image_upload_instruction_point1_description') }}
+          </li>
+          <li>
+            <strong>{{ _('query_page_image_upload_instruction_point2_title') }}</strong>
+            {{ _('query_page_image_upload_instruction_point2_description') }}
+          </li>
+          <li>
+            <strong>{{ _('query_page_image_upload_instruction_point3_title') }}</strong>
+            {{ _('query_page_image_upload_instruction_point3_description') }}
+          </li>
+        </ul>
       </div>
     </div>
     <p class="my-3">
-      Multi language Support added via
+      {{ _('query_page_bhashini_text') }}
       <a href="https://bhashini.gov.in/">Bhashini</a>
     </p>
   </app-wrapper>
