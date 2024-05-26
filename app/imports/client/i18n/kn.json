@@ -37,5 +37,20 @@
   "query_page_image_upload_instruction_point1_description": "ಚಿತ್ರದ ಓದುಗತೆ ಮತ್ತು ಖಚಿತತೆಯನ್ನು ಹೆಚ್ಚಿಸಲು ಚಿತ್ರವನ್ನು ಚೆನ್ನಾಗಿ ಬೆಳಗಿದ ಪರಿಸ್ಥಿತಿಗಳಲ್ಲಿ ತೆಗೆದುಕೊಳ್ಳಿ.",
   "query_page_image_upload_instruction_point2_title": "ಹೈ ರೆಸಲ್ಯೂಶನ್:",
   "query_page_image_upload_instruction_point2_description": "ಚಿತ್ರವನ್ನು ಹಿಡಿಯಲು ಹೈ-ರೆಸಲ್ಯೂಶನ್ ಕ್ಯಾಮೆರಾ ಸೆಟ್ಟಿಂಗ್ ಅನ್ನು ಬಳಸಿರಿ.",
-  "query_page_bhashini_text": "ಬಹು ಭಾಷಾ ಬೆಂಬಲ"
+  "query_page_bhashini_text": "ಬಹು ಭಾಷಾ ಬೆಂಬಲ",
+  "query_page_answer_to_your_query": "Answer to your query",
+  "query_page_finish_recording": "ರೆಕಾರ್ಡಿಂಗ್ ಮುಗಿಸಿ",
+  "query_page_processing": "ಸಂಸ್ಕರಣೆ",
+  "query_page_reset": "ಮರುಹೊಂದಿಸಿ",
+  "query_page_submit": "ಸಲ್ಲಿಸು",
+  "query_page_second": "ಎರಡನೇ",
+  "result_card_source": "ಉಗಮ",
+  "result_card_read_more": "ಮತ್ತಷ್ಟು ಓದು",
+  "result_card_view_pdf": "PDF ವೀಕ್ಷಿಸಿ",
+  "result_card_full_text": "ಪೂರ್ಣ ಪಠ್ಯ",
+  "result_card_close": "ಮುಚ್ಚಿದ",
+  "result_page_ai_response": "AI ಪ್ರತಿಕ್ರಿಯೆ",
+  "result_page_knowledge_bank": "ಜ್ಞಾನ ಬ್ಯಾಂಕ್",
+  "result_page_check_out": "ಹೆಚ್ಚಿನ ಮಾಹಿತಿಗಾಗಿ ಜ್ಞಾನ ಬ್ಯಾಂಕ್ ಅನ್ನು ಪರಿಶೀಲಿಸಿ",
+  "result_page_ask_another_question": "ಇನ್ನೊಂದು ಪ್ರಶ್ನೆ ಕೇಳಿ"
 }

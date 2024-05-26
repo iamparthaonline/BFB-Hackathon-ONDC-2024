@@ -1,8 +1,8 @@
 <template>
   <div class="mt-4 main-container">
     <v-tabs color="deep-purple accent-4" left v-model="active_tab">
-      <v-tab>AI Response</v-tab>
-      <v-tab>Knowledge bank</v-tab>
+      <v-tab>{{ _('result_page_ai_response') }}</v-tab>
+      <v-tab>{{ _('result_page_knowledge_bank') }}</v-tab>
       <v-tab-item>
         <v-col sm="4" md-cols="6" class="mb-0">
           <v-select
@@ -25,8 +25,8 @@
           </template>
 
           <p class="my-4">
-            For more information check out the
-            <v-btn outlined color="deep-purple accent-4" @click="testfn">Knowledge bank</v-btn>
+            {{ _('result_page_check_out') }}
+            <v-btn outlined color="deep-purple accent-4" @click="testfn">{{ _('result_page_knowledge_bank') }}</v-btn>
           </p>
         </div>
       </v-tab-item>
