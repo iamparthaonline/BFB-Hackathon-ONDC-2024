@@ -92,7 +92,7 @@
     },
   };
 </script>
-<style scoped>
+<style lang="scss" scoped>
   .pdf-viewer {
     overflow: auto;
     max-height: calc(100dvh - 111px);

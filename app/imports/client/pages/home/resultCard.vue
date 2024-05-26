@@ -1,17 +1,25 @@
 <template>
   <v-card class="mx-auto" width="100%" :class="{active: isActive}">
     <v-card-text>
-      <div class="flex flex-row">
+      <!-- <div class="flex flex-row">
         <v-progress-linear v-model="showScore" height="20" color="green" rounded readonly>
           <strong>{{ showScore }}% Match</strong>
         </v-progress-linear>
-      </div>
-      <div class="text--primary my-8">{{ result.page_content.substring(0, 300) }}...</div>
+      </div> -->
+      <div class="text--primary mb-8">{{ result.page_content.substring(0, 300) }}...</div>
       <div class="text--primary">source: {{ result.source }}#page={{ result.source_page_number + 1 }}</div>
     </v-card-text>
     <v-card-actions>
-      <v-btn text color="teal accent-4" @click="reveal = true">Read More</v-btn>
-      <v-btn text color="teal accent-4" @click="openSource"><v-icon>mdi-open-in-new</v-icon></v-btn>
+      <v-btn
+        text
+        color="deep-purple lighten-1"
+        :href="`${result.source}#page=${result.source_page_number + 1}`"
+        target="_blank"
+      >
+        <v-icon>mdi-open-in-new</v-icon>
+      </v-btn>
+      <v-btn text color="deep-purple lighten-1" @click="reveal = true">Read More</v-btn>
+      <v-btn text color="deep-purple lighten-1" @click="openSource">View PDF</v-btn>
     </v-card-actions>
     <v-expand-transition>
       <v-card v-if="reveal" class="transition-fast-in-fast-out v-card--reveal overflow-auto" style="height: 100%">
@@ -22,7 +30,7 @@
           </p>
         </v-card-text>
         <v-card-actions class="pt-0">
-          <v-btn text color="teal accent-4" @click="reveal = false">Close</v-btn>
+          <v-btn text color="deep-purple lighten-1" @click="reveal = false">Close</v-btn>
         </v-card-actions>
       </v-card>
     </v-expand-transition>
@@ -30,6 +38,7 @@
       :showModal="showModal"
       @closeModal="closeModal"
       :source="fileName"
+      :content="result.page_content.substring(0, 300)"
       :pageNumber="result.source_page_number + 1"
     />
   </v-card>
@@ -91,8 +100,8 @@
   .v-card {
     transition: all 0.2s ease-in;
     &.active {
-      outline: 1px solid black;
-      transform: translateX(15px);
+      outline: 1px solid #7930f0;
+      // transform: translateX(15px);
     }
   }
   .v-card--reveal {

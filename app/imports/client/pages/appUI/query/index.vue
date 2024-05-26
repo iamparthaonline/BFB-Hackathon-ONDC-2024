@@ -1,8 +1,9 @@
 <template>
-  <app-wrapper>
+  <app-wrapper ref="appWrapper">
     <div class="product-packaging-scanner-container">
       <nav-back @goback="goback" />
-      <h1>{{ _('query_page_title') }}</h1>
+      <h1 v-if="status === 'INITIAL'">{{ _('query_page_title') }}</h1>
+      <h1 v-else>Answer to your query</h1>
       <div v-if="status === 'INITIAL'">
         <p class="description">
           {{ _('query_page_description') }}
@@ -124,12 +125,12 @@
       <div v-else-if="status === 'LOADING' || status === 'SUCCESS' || status === 'REPORT'" class="scanning-image">
         <div class="original-query mb-3">
           <h2>{{ _('query_page_your_query_text') }}</h2>
-          <figure v-if="audioSearch" class="my-2">
+          <figure v-if="audioURL" class="my-2">
             <figcaption>{{ _('query_page_listen_your_query_text') }}</figcaption>
             <audio controls :src="audioURL"></audio>
           </figure>
 
-          <p>"{{ audioSearch ? ASTValue : name }}"</p>
+          <p>"{{ audioURL ? ASTValue : name }}"</p>
         </div>
         <div v-if="status === 'REPORT'" class="report-paragraph">
           <v-alert v-if="timeTaken && !loading" dense text type="success">
@@ -146,9 +147,7 @@
             @changeLang="getResponseInSelectedLang"
           ></results>
 
-          <v-btn block @click="status = 'INITIAL'" class="mt-3" outlined color="#4b06ba">
-            {{ _('query_page_check_another_text') }}
-          </v-btn>
+          <v-btn block @click="status = 'INITIAL'" class="mt-3" outlined color="#4b06ba">Search more query</v-btn>
         </div>
         <v-overlay v-if="status === 'LOADING' || status === 'SUCCESS'">
           <div class="loader-container" v-if="status === 'LOADING'">
@@ -244,7 +243,7 @@
       timeTaken: Number,
       response: false,
       semanticSearchResponse: '',
-      aiResponse: '',
+      aiResponse: [],
       loading: false, // to avoid error msg
       invalid: false, // to avoid error msg
       defaultSelected: 'en',
@@ -270,7 +269,8 @@
       langChangeLoading: false,
     }),
     async mounted() {
-      await register(await connect());
+      this.port = await connect();
+      await register(this.port);
     },
     computed: {
       disabledAudioSubBtn() {
@@ -284,13 +284,15 @@
           this.status = 'INITIAL';
           this.audioContent = null;
           this.audioURL = null;
+          this.timerString = '00:00';
         } else this.$router.go(-1);
       },
       async submit() {
         this.loadingSubmitBtn = true;
+        this.status = 'LOADING';
         this.$refs.observer.validate();
         if (this.defaultSelected !== 'en') {
-          await Meteor.call('NMT_handler', this.defaultSelected, 'en', this.name, (err, data) => {
+          await Meteor.call('NMT_handler', this.defaultSelected, 'en', [{source: this.name.trim()}], (err, data) => {
             if (!err) {
               console.log('data', data);
               this.loadingSubmitBtn = false;
@@ -324,7 +326,7 @@
         this.loadingSubmitBtn = false;
         this.status = 'LOADING';
         this.semanticSearchResponse = '';
-        this.aiResponse = '';
+        this.aiResponse = [];
         this.response = false;
         const startTime = +new Date();
         const response = await fetch(`${Meteor.settings.public.API_HOST}/generate-AI-response`, {
@@ -335,7 +337,14 @@
           },
           body: JSON.stringify({queryText, k: 25}),
         });
-        this.responseSrc = await response.json();
+        const bareText = await response.json();
+        this.responseSrc = bareText
+          .split('\n')
+          .filter(text => text.trim())
+          .map(text => {
+            return {source: text.trim()};
+          });
+        console.log('🚀 ~ searchQuery ~  this.responseSrc:', this.responseSrc);
         await this.getResponseInSelectedLang(this.defaultSelected);
         const semanticSearch = await fetch(
           `${Meteor.settings.public.API_HOST}/semantic-search?query=${queryText}&k=25`,
@@ -360,7 +369,7 @@
           navigator.mediaDevices.getUserMedia(this.constraints).then(this.onSuccess, this.onError);
         } else {
           this.recording = 'INITIAL';
-          // console.log('MediaDevices.getUserMedia() not supported on your browser!');
+          console.log('MediaDevices.getUserMedia() not supported on your browser!');
         }
       },
       async stopRecording() {
@@ -465,6 +474,7 @@
       },
       async searchQueryWithAudio() {
         this.loadingSubmitBtn = true;
+        this.status = 'LOADING';
         this.audioSearch = true;
         if (this.defaultSelected !== 'en') {
           await Meteor.call('ASR_NMT_handler', this.defaultSelected, this.audioContent, (err, data) => {
@@ -519,11 +529,12 @@
             console.log('data', data);
             if (data.isSuccess) {
               console.log(
-                '🚀 ~ awaitMeteor.call ~ data.data.pipelineResponse[1].output[0].source:',
-                data.data.pipelineResponse[0].output[0].source,
+                '🚀 ~ awaitMeteor.call ~ data.data.pipelineResponse[1].output:',
+                data.data.pipelineResponse[0].output,
               );
-              this.aiResponse = data.data.pipelineResponse[0].output[0].target;
+              this.aiResponse = data.data.pipelineResponse[0].output;
               this.langChangeLoading = false;
+              // this.status = 'REPORT';
             }
           } else {
             this.langChangeLoading = false;
@@ -550,9 +561,13 @@
         text-align: left;
         font-weight: 400;
         @media only screen and (min-width: 600px) {
+          margin: 0px -100px;
           p {
             font-size: 16px;
           }
+        }
+        @media only screen and (max-width: 600px) {
+          max-width: calc(100dvw - 40px);
         }
         h3 {
           margin-top: 0;

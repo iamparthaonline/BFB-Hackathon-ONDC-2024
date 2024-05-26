@@ -48,9 +48,12 @@
 
       const typeWriter = () => {
         if (i < actualHeading.length) {
-          document.getElementById('heading').innerHTML += actualHeading.charAt(i);
-          i += 1;
-          this.typeWriterTimeout = setTimeout(typeWriter, speed);
+          const headingEle = document.getElementById('heading');
+          if (headingEle) {
+            headingEle.innerHTML += actualHeading.charAt(i);
+            i += 1;
+            this.typeWriterTimeout = setTimeout(typeWriter, speed);
+          }
         }
       };
       typeWriter();
@@ -68,7 +71,8 @@
 
 <style lang="scss" scoped>
   .dashboard-container {
-    height: 100vh;
+    // height: 100vh;
+    margin-top: 80px;
     .download-app {
       background-color: #7930f0;
       color: #fff;

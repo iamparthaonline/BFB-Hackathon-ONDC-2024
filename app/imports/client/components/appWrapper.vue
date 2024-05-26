@@ -24,6 +24,7 @@
 <style lang="scss" scoped>
   .main-app-wrapper {
     margin: auto;
+    padding-bottom: 80px;
     background-color: #f7f7fc;
     @media only screen and (min-width: 600px) {
       display: flex;

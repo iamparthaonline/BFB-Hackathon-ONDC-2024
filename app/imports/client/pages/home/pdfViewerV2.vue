@@ -1,11 +1,5 @@
 <template>
-  <iframe
-    id="pdf-js-viewer"
-    :src="`/pdfjs/web/viewer.html?file=${encodeURIComponent(mask())}`"
-    title="webviewer"
-    frameborder="0"
-    ref="viewer"
-  ></iframe>
+  <iframe id="pdf-js-viewer" :src="getSrc" title="webviewer" frameborder="0" ref="viewer"></iframe>
 </template>
 
 <script>
@@ -13,34 +7,43 @@
     props: {
       source: String,
       content: String,
+      page: Number,
+    },
+    computed: {
+      getSrc() {
+        console.log('this.page', this.page);
+        return `/pdfjs/web/viewer.html?file=${encodeURIComponent(this.mask)}`;
+      },
+      mask() {
+        return `${window.location.origin}/${this.source}#page=${this.page}`;
+      },
     },
     methods: {
-      mask() {
-        return `${window.location.origin}/${this.source}`;
-      },
       find() {
-        this.$refs.viewer.addEventListener('load', () => {
-          const iframeDocument = this.$refs.viewer.contentWindow;
+        const iframeDocument = this.$refs.viewer.contentWindow;
 
-          iframeDocument.PDFViewerApplication.eventBus.dispatch('find', {
-            caseSensitive: false,
-            findPrevious: undefined,
-            highlightAll: true,
-            phraseSearch: false,
-            query: this.content,
-          });
+        iframeDocument.PDFViewerApplication.eventBus.dispatch('find', {
+          caseSensitive: false,
+          findPrevious: undefined,
+          highlightAll: true,
+          phraseSearch: false,
+          query: this.content,
         });
       },
     },
     mounted() {
-      this.find();
+      this.$refs.viewer.addEventListener('load', () => {
+        this.find();
+      });
     },
   };
 </script>
 
 <style lang="scss" scoped>
   #pdf-js-viewer {
-    height: 100%;
     width: 100%;
+    @media only screen and (min-width: 600px) {
+      height: 100%;
+    }
   }
 </style>
