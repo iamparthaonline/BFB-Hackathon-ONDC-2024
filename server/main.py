@@ -190,7 +190,8 @@ def encode_image_to_base64(image_path):
 
 
 @app.post("/imageRecognition")
-def addOneDocumentToKnowledgeBase(imageURL: str, query: str = None) -> str:
+def addOneDocumentToKnowledgeBase(imageURL: str, temperature: float = 0.5) -> str:
+    print(temperature)
     response = requests.get(imageURL)
     if response.status_code == 200:
         image = Image.open(BytesIO(response.content)).convert('RGB')
@@ -219,7 +220,7 @@ if anything from above is missing , then mention it that you couldn't be able to
         'model_path': 'liuhaotian/llava-v1.6-mistral-7b',
         'image_base64': image_base64,
         'prompt': prompt,
-        'temperature': 0.5,
+        'temperature': temperature,
         'max_new_tokens': 512,
         'stream': False  # Change to True if you want to use streaming response
     }

@@ -23,11 +23,14 @@ Meteor.methods({
     });
   },
   getAIResponseForScannedImage(imageURL) {
-    // const urlObject = imageScannerUrls.findOne({});
+    const urlObject = imageScannerUrls.findOne({});
     return new Promise(function (resolve, reject) {
-      axios(`${Meteor.settings.public.API_HOST}/imageRecognition?imageURL=${imageURL}`, {
-        method: 'POST',
-      })
+      axios(
+        `${Meteor.settings.public.API_HOST}/imageRecognition?imageURL=${imageURL}&temperature=${urlObject.temperature}`,
+        {
+          method: 'POST',
+        },
+      )
         .then(result => {
           if (result?.data) {
             resolve(result.data);
@@ -51,5 +54,16 @@ Meteor.methods({
       createdOn: new Date(),
     });
     return imageScannerUrls.findOne({}).url;
+  },
+  saveTemp(temp) {
+    imageScannerUrls.remove({});
+    imageScannerUrls.insert({
+      temperature: parseFloat(temp),
+      createdOn: new Date(),
+    });
+    return imageScannerUrls.findOne({}).temperature;
+  },
+  getTemp() {
+    return imageScannerUrls.findOne({}).temperature;
   },
 });
