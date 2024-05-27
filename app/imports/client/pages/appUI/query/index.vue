@@ -26,16 +26,17 @@
 
           <validation-observer ref="observer" v-slot="{invalid}">
             <form @submit.prevent="submit" class="mt-4">
-              <validation-provider v-slot="{errors}" name="Query" rules="required|max:200">
+              <validation-provider v-slot="{errors}" name="Query" rules="required|max:500">
                 <v-textarea
                   filled
                   auto-grow
                   v-model="name"
                   outlined
-                  :counter="200"
+                  :counter="500"
                   :error-messages="errors"
                   label="Enter your query"
                   required
+                  @input="$refs.observer.validate()"
                 ></v-textarea>
                 <v-select
                   class="mt-3"
@@ -266,6 +267,7 @@
       audioSearch: false,
       ASTValue: null,
       langChangeLoading: false,
+      disableSubmitBtn: false,
     }),
     async mounted() {
       this.port = await connect();
@@ -286,6 +288,7 @@
           this.timerString = '00:00';
         } else this.$router.go(-1);
       },
+
       async submit() {
         this.loadingSubmitBtn = true;
         this.status = 'LOADING';
@@ -307,6 +310,7 @@
               }
             } else {
               this.loadingSubmitBtn = false;
+              this.status = 'ERROR';
               console.log('error', err);
             }
           });
@@ -490,6 +494,8 @@
               }
             } else {
               this.loadingSubmitBtn = false;
+              this.status = 'ERROR';
+
               console.log('error', err);
             }
           });
@@ -509,6 +515,7 @@
               }
             } else {
               this.loadingSubmitBtn = false;
+              this.status = 'ERROR';
               console.log('error', err);
             }
           });
@@ -537,6 +544,8 @@
             }
           } else {
             this.langChangeLoading = false;
+            this.status = 'ERROR';
+
             console.log('error', err);
           }
         });
