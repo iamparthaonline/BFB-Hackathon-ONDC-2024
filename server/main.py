@@ -201,7 +201,8 @@ def addOneDocumentToKnowledgeBase(imageURL: str, query: str = None) -> str:
         print('Failed to fetch the image from the URL')
         exit()
 
-    prompt = """You are a legal complience assistant who will identify the product packaging and labelling , you will check if product has The presence of an FSSAI logo and license number.
+    prompt = """You are a legal complience assistant who will identify the product packaging and labelling,
+you will check if product has The presence of an fssai logo and license number.
 The list of ingredients and their respective quantities.
 Nutritional information per serving size.
 Declaration of food additives.
@@ -218,7 +219,7 @@ if anything from above is missing , then mention it that you couldn't be able to
         'model_path': 'liuhaotian/llava-v1.6-mistral-7b',
         'image_base64': image_base64,
         'prompt': prompt,
-        'temperature': 0.2,
+        'temperature': 0.5,
         'max_new_tokens': 512,
         'stream': False  # Change to True if you want to use streaming response
     }
