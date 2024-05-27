@@ -56,5 +56,5 @@ docker compose up
 
 [Website Link](http://34.42.69.103/)
 
-![QR Image](https://github.com/iamparthaonline/BFB-Hackathon-ONDC-2024/blob/main/livelink.png)
+![QR Image](https://github.com/iamparthaonline/BFB-Hackathon-ONDC-2024/blob/main/QR_new.jpeg)
 
